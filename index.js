@@ -17,7 +17,7 @@ app.use( bodyParser.urlencoded({ extended: false }) );
 app.use (bodyParser.json());
 //database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/wikihow?auto_reconnect');
+mongoose.connect('mongodb://chuyendecongnghe:12345678@ds064188.mlab.com:64188/wikihow');
 //model User
 var Schema = mongoose.Schema;
 var User = new Schema({
