@@ -1,0 +1,12 @@
+{
+	"title": "Cach luoc thit",
+	"author": "Binh",
+	"category": "nau an",
+	"rate": [["ss","ss"],["ss","ff","333"]],
+	"parts": [{"title":"So che",
+				"video": "/dd",
+				"steps": [{"text":"thai thit","images":"/anh.png"},"uop thit"]
+				}
+			],
+	"tips": ["sss","ss"]
+}

@@ -18,45 +18,33 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
   $stateProvider
     .state('profile',{
       url: '/profile',
-      views: {
-        view1: {templateUrl: 'htmls/profile.html', controller: 'ProfileCtrl'},
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/profile.html', 
+      controller: 'ProfileCtrl'
     })
     .state('home',{
       url: '/home',
-      views: {
-        view1: {templateUrl: 'htmls/home.html',      controller: 'HomepageCtrl'},    
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/home.html',      
+      controller: 'HomepageCtrl'
     })
     .state('viewArticle',{
       url: '/article?id&title',
-      views: {
-        view1: {templateUrl: 'htmls/view-article.html', controller: 'ViewArticleCtrl'},
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/view-article.html', 
+      controller: 'ViewArticleCtrl'
     })
     .state('search',{
       url: '/search?key',
-      views: {
-        view1: {templateUrl: 'htmls/search.html',      controller: 'SearchCtrl'},
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/search.html',      
+      controller: 'SearchCtrl'
     })
     .state('newArticle',{
       url: '/new-article',
-      views: {
-        view1: {templateUrl: 'htmls/new-article.html',      controller: 'CreateNewArticleCtrl'},
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/new-article.html',      
+      controller: 'CreateNewArticleCtrl'
     })
     .state('signup',{
       url: '/signup',
-      views: {
-        view1: {templateUrl: 'htmls/sign-up.html',      controller: 'SignUpCtrl'},
-        view2: {templateUrl: 'htmls/view2.html', controller: 'View2Ctrl'}
-      }
+      templateUrl: 'htmls/sign-up.html',      
+      controller: 'SignUpCtrl'
     })
      $locationProvider.html5Mode(true);
 });
