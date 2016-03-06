@@ -17,20 +17,43 @@ app.use( bodyParser.urlencoded({ extended: false }) );
 app.use (bodyParser.json());
 //database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://chuyendecongnghe:12345678@ds064188.mlab.com:64188/wikihow');
+mongoose.connect('mongodb://localhost:27017/wikihow?auto_reconnect');
 //model User
 var Schema = mongoose.Schema;
 var User = new Schema({
 	username: String,
-	password: String
+	password: String,
+  email: String
 }, { collection: 'users' });
 var Users = mongoose.model('user',User);
+var ArticleHeader = new Schema({
+  id: Number,
+  title: String,
+  author: String,
+  category: String,
+  content: Schema.Types.ObjectId
+}, { collection: 'articles'});
+var ArticleHeaders =mongoose.model('article',ArticleHeader);
+var ArticleContent = new Schema({
+  id: Number,
+  rate: [[String]],
+  parts: [{
+    title: String,
+    video: String,
+    steps: [{
+      text: String,
+      images: [String]
+    }]
+  }]
+},{ collection: 'articleContent'});
+var ArticleContents = mongoose.model('articleContent',ArticleContent);
 //middleware for auth
 var passport = require('passport');
-app.use(expressSession(
-    {secret: "SECRET",
+app.use(expressSession({
+    secret: "SECRET",
     resave: true,
-    saveUninitialized: true}));
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -124,7 +147,31 @@ passport.use('signup', new LocalStrategy({
   })
 );
 
+var findArticleById = function(myid,done){
+  var article = {};
+  ArticleHeaders.findOne({'id':myid},function(err,header){
+    if(err){
+      console.log("error when find article with id "+id);
+      return done(err,null);
+    }
+    if(header) article.header = header;
+    else return done(err,null,{message: "Not found ariticle"})
+  });
+  ArticleContents.findOne({'id': article.header.content},function(err,content){
+    if(err){
+      console.log("error when find article with id "+id);
+      return done(err,null);
+    }
+    if(content) {
+      article.content = content;
+      return done(null,article);
+    }
+    else{
+      return done(null,null,{message: "Missing content"});
+    }
 
+  });
+}
 app.get('/home', function(req, res) {
   res.render('pages/index');
 });
@@ -145,6 +192,27 @@ app.get('/article',function(req,res){
 });
 app.get('/new-article',function(req,res){
   res.render('pages/index');
+});
+app.get('/get-article-content:id',function(req,res){
+    res.send(findArticleById(req.id),function(err,article,info){
+      if(err){
+        console.log(err);
+        res.send("Error");
+        return;
+      }
+      if(!article){
+        res.send({message:info});
+      }else {
+        res.send({article: article});
+      }
+
+    })
+});
+app.get('/abc',function(req,res){
+
+});
+app.post('/new-article/new',function(req,res){
+
 });
 app.post('/login', passport.authenticate('login', {
     successRedirect: '/loginsuccess',

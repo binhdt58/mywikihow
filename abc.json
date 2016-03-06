@@ -1,12 +1,37 @@
 {
-	"title": "Cach luoc thit",
-	"author": "Binh",
-	"category": "nau an",
-	"rate": [["ss","ss"],["ss","ff","333"]],
-	"parts": [{"title":"So che",
-				"video": "/dd",
-				"steps": [{"text":"thai thit","images":"/anh.png"},"uop thit"]
-				}
+	"_id": "Mongo's _id",
+	"username": "name",
+	"password": "password",
+	"email": "email"
+}
+
+article header
+{
+	"id": "id",
+	"title": "title",
+	"description": "small paragraph to introduce article",
+	"author": "username",
+	"category": "cooking, IT, housework,...",
+	"image": "image",
+	"content": "_id of content"
+}
+article content
+{
+	"id": "id",
+	"rate": [
+			["user1","user2","user4"],//they rate 1*
+			["user3","user5","....."],//they rate 2*
+			["......."]// ......
 			],
-	"tips": ["sss","ss"]
+	"parts": [{
+			"title": "this is title of parts 1",
+			"video": "link i.e youtube/abcxyz",
+			"steps": [ 
+				{	"text":"text show detail infomations of 1st steps",
+					"image": ["image1","image2","image3"]},
+				{	"text":"text show detail infomations of 2nd steps",
+					"image": ["image1","image2""image3"]},
+				]
+		}
+		]
 }

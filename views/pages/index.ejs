@@ -31,7 +31,7 @@
     </form>
     <ul class="nav navbar-nav navbar-right">
       <li class="navbar-right " ng-hide = "!user">
-        <a href="/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+        <a href="/profile"><span class="glyphicon glyphicon-user"></span> {{user.username}}</a>
       </li>   
       <li class="navbar-right dropdown" ng-hide = "user">
         <a href="#" data-toggle="dropdown" class="dropdown-toggle">Login <b class="caret"></b></a>

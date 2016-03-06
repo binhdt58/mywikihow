@@ -38,12 +38,13 @@ app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies
 	}
 
 }]);
-app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window',function($scope,$rootScope,$cookieStore,$window){
+app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$location',function($scope,$rootScope,$cookieStore,$window,$location){
 	$scope.logout = function(){
 		console.log("logged out");
 		delete $rootScope.user;
 		delete $window.sessionStorage.token ;
 		$cookieStore.remove('user');
+		$location.url('/home');
 	}
 }]);
 app.controller("ArticleCtrl",[function(){
