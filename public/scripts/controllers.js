@@ -47,9 +47,7 @@ app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$l
 		$location.url('/home');
 	}
 }]);
-app.controller("ArticleCtrl",[function(){
 
-}]);
 app.controller("HomepageCtrl",[function(){
 
 }]);
@@ -86,15 +84,7 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope',function($http,$scope
 		});
 	}
 }]);
-app.controller('CreateNewArticleCtrl',[function(){
 
-}]);
-app.controller('ViewArticleCtrl',[function(){
-
-}]);
 app.controller('SearchCtrl',[function(){
 
 }]);
-app.controller("View2Ctrl",[function(){
-
-}])

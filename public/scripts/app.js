@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('WikiHow', ['ui.router','appController']);
+var app = angular.module('WikiHow', ['ui.router','appController','appController2']);
 app.directive('whenEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
