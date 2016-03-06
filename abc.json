@@ -9,7 +9,6 @@ article header
 {
 	"id": "id",
 	"title": "title",
-	"description": "small paragraph to introduce article",
 	"author": "username",
 	"category": "cooking, IT, housework,...",
 	"image": "image",
@@ -18,6 +17,7 @@ article header
 article content
 {
 	"id": "id",
+	"description": "small paragraph to introduce article",
 	"rate": [
 			["user1","user2","user4"],//they rate 1*
 			["user3","user5","....."],//they rate 2*
