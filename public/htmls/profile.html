@@ -28,7 +28,7 @@
 		<ul>
 			<li ng-repeat = "article in articles">
 				<h4>{{article.title}}</h4>
-				<p><span><strong>Category: </strong><i>{{categories[article.category]}}.  </i></span>
+				<p><span><strong>Category: </strong><i>{{article.category}}.  </i></span>
 				<span><strong> Last update: </strong><i>{{article.date}}</i></span></p>
 				<a class = "text-left" ng-href="/article?id={{article._id}}">Click to view detail -></a>
 			</li>

@@ -36,12 +36,11 @@ var ArticleHeader = new Schema({
   title: String,
   author: String,
   description: String,
-  category: Number,
+  category: String,
   content: Schema.Types.ObjectId
 }, { collection: 'articles'});
 var ArticleHeaders =mongoose.model('article',ArticleHeader);
 var ArticleContent = new Schema({
-  id: Number,
   rate: [[String]],
   parts: [{
     title: String,
@@ -175,28 +174,30 @@ var changePass = function(_id,oldPass,newPass,done){
 }
 var findArticleById = function(myid,done){
   var article = {};
-  ArticleHeaders.findOne({'id':myid},function(err,header){
+  ArticleHeaders.findOne({'_id':myid},function(err,header){
     if(err){
-      console.log("error when find article with id "+id);
+      console.log("error when find article with id "+myid);
       return done(err,null);
     }
-    if(header) article.header = header;
-    else return done(err,null,{message: "Not found ariticle"})
+    if(!header){
+      return done(err,null,{message: "Not found ariticle"});
+    }
+    article.header = header;
+    ArticleContents.findOne({'_id': article.header.content},function(err,content){
+      if(err){
+        console.log("error when find content with id "+id);
+        return done(err,null);
+      }
+      if(content) {
+        article.content = content;
+        return done(null,article);
+      }
+      else{
+        return done(null,null,{message: "Missing content"});
+      }
+    });
   });
-  ArticleContents.findOne({'id': article.header.content},function(err,content){
-    if(err){
-      console.log("error when find article with id "+id);
-      return done(err,null);
-    }
-    if(content) {
-      article.content = content;
-      return done(null,article);
-    }
-    else{
-      return done(null,null,{message: "Missing content"});
-    }
-
-  });
+  
 };
 var findArticleByUsername = function(username, done){
   var articles;
@@ -234,7 +235,7 @@ app.get('/search',function(req,res){
 app.get('/profile',function(req,res){
   res.render('pages/index');
 });
-app.get('/article',function(req,res){
+app.get('/article/:id',function(req,res){
   res.render('pages/index');
 });
 app.get('/new-article',function(req,res){
@@ -244,7 +245,7 @@ app.get('/category/:key',function(req,res){
   res.render('pages/index');
 });
 app.get('/get-article-content:id',function(req,res){
-    findArticleById(req.id,function(err,article,info){
+    findArticleById(req.params.id,function(err,article,info){
       if(err){
         console.log(err);
         res.send("Error");
@@ -254,7 +255,7 @@ app.get('/get-article-content:id',function(req,res){
         console.log("not found");
         res.send({message:info});
       }else {
-        res.send({article: article});
+        res.send(article);
       }
 
     });
@@ -301,6 +302,35 @@ app.post('/change-pass/',function(req,res){
       res.send({message: info.message});
     }
   });
+});
+app.post('/post-article', function(req,res){
+  var header = req.body.header;
+  var content = req.body.content;
+  var newContent = new ArticleContents();
+  newContent.description = content.description;
+  newContent.parts = content.parts;
+  var contentId = Schema.Types.ObjectId;
+  newContent.save(function(err,contentReturn){
+    if(err) {
+      res.send(err);
+      return;
+    };
+    contentId = contentReturn._id;
+    var newHeader = new ArticleHeaders();
+    newHeader.title = header.title;
+    newHeader.author = header.author;
+    newHeader.image = header.image;
+    newHeader.category = header.category;
+    newHeader.content = contentId;
+    newHeader.save(function(err,headerReturn){
+      if(err) {
+        res.send(err);
+        return;
+    }
+    res.send("Complete");
+  });
+  });
+  
 });
 app.post('/login', passport.authenticate('login', {
     successRedirect: '/loginsuccess',

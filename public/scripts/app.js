@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('WikiHow', ['ui.router','appController','appController2']);
+var app = angular.module('WikiHow', ['ui.router','appController']);
 app.directive('whenEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
@@ -27,7 +27,7 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       controller: 'HomepageCtrl'
     })
     .state('viewArticle',{
-      url: '/article?id',
+      url: '/article/:id',
       templateUrl: 'htmls/view-article.html', 
       controller: 'ViewArticleCtrl'
     })
@@ -37,7 +37,7 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       controller: 'CategoryCtrl'
     })
     .state('search',{
-      url: '/search?key',
+      url: '/search/:key',
       templateUrl: 'htmls/search.html',      
       controller: 'SearchCtrl'
     })
@@ -50,6 +50,6 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       url: '/signup',
       templateUrl: 'htmls/sign-up.html',      
       controller: 'SignUpCtrl'
-    })
+    });
      $locationProvider.html5Mode(true);
 });

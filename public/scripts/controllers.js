@@ -1,13 +1,6 @@
-var app = angular.module("appController",['ngCookies']);
+var app = angular.module("appController",['ngCookies','ui.router']);
 app.run(['$cookies','$window','$rootScope','$http',function($cookies,$window,$rootScope,$http){
 	$rootScope.user = null;
-	$http({
-		method: 'GET',
-		url: '/get-categories-list'
-	}).then(function(response){
-		$rootScope.categories = response.data.map(function(a) {return a.name;});
-	},function(){});
-	
 	if($window.sessionStorage.token) $rootScope.user = $window.sessionStorage.user;
 	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
 }]);
@@ -128,6 +121,12 @@ app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope
 	},function(){
 
 	});
+	$http({
+		method: 'GET',
+		url: '/get-categories-list'
+	}).then(function(response){
+		$scope.categories = response.data.map(function(a) {return a.name;});
+	},function(){});
 }]);
 app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function($http,$scope,$rootScope,$location){
 	$scope.error = null;
@@ -163,10 +162,9 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function(
 		});
 	}
 }]);
-
-app.controller('SearchCtrl',['$rootScope','$scope','$http',function($scope,$rootScope,$http){
-	$rootScope.title = "Search result";
+app.controller("SearchCtrl",['$rootScope','$scope','$http',function($rootScope,$scope,$http){
+	$rootScope.title = "Search";
 }]);
-app.controller('CategoryCtrl',['$rootScope','$scope','$http',function($scope,$rootScope,$http){
+app.controller('CategoryCtrl',['$rootScope','$scope','$http',function($rootScope,$scope,$http){
 	$rootScope.title = "Search result";
 }]);
