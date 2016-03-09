@@ -26,7 +26,6 @@
       max-width: 100%; }
 
 
-
 .sidebar-nav {
     padding: 9px 0;
 }
@@ -46,10 +45,13 @@
 }
 
 .dropdown:hover .dropdown-menu {
+    color: black;
     display: block;
     width: 300px;
 }
-
+.black-font-color a{
+    color: black;
+}
 .nav-tabs .dropdown-menu, .nav-pills .dropdown-menu, .navbar .dropdown-menu {
     margin-top: 0;
 }

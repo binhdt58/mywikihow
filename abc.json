@@ -10,7 +10,7 @@ article header
 	"id": "id",
 	"title": "title",
 	"author": "username",
-	"category": "cooking, IT, housework,...",
+	"category": 1, //number
 	"image": "image",
 	"content": "_id of content"
 }

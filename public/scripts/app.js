@@ -27,9 +27,14 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       controller: 'HomepageCtrl'
     })
     .state('viewArticle',{
-      url: '/article?id&title',
+      url: '/article?id',
       templateUrl: 'htmls/view-article.html', 
       controller: 'ViewArticleCtrl'
+    })
+    .state('category',{
+      url: '/category/:key',
+      templateUrl: 'htmls/category.html',
+      controller: 'CategoryCtrl'
     })
     .state('search',{
       url: '/search?key',

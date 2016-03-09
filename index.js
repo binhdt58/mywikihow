@@ -26,11 +26,17 @@ var User = new Schema({
   email: String
 }, { collection: 'users' });
 var Users = mongoose.model('user',User);
+var Category = new Schema({
+  name: String,
+  id: Number
+},{collection: 'categories'});
+var Categories = mongoose.model('category',Category);
 var ArticleHeader = new Schema({
   id: Number,
   title: String,
   author: String,
-  category: String,
+  description: String,
+  category: Number,
   content: Schema.Types.ObjectId
 }, { collection: 'articles'});
 var ArticleHeaders =mongoose.model('article',ArticleHeader);
@@ -146,7 +152,27 @@ passport.use('signup', new LocalStrategy({
     findOrCreateUser();
   })
 );
-
+var changePass = function(_id,oldPass,newPass,done){
+    Users.findOne({'_id':_id},function(err,user){
+      if(err){
+        console.log(err);
+        return done(err,null);
+      }
+      if(user){
+        if(isValidPassword(user,oldPass)){
+          user.update({'password': createHash(newPass)}).exec();
+          return done(null,true);
+        }
+        else{
+          console.log("pass not match");
+          return done(null,false,{message: "Wrong password"});
+        }
+      }else{
+        console.log("user empty");
+        return done(null,false,{message: "Server cant find your account, please log out then log in"});
+      }
+    })
+}
 var findArticleById = function(myid,done){
   var article = {};
   ArticleHeaders.findOne({'id':myid},function(err,header){
@@ -171,7 +197,28 @@ var findArticleById = function(myid,done){
     }
 
   });
-}
+};
+var findArticleByUsername = function(username, done){
+  var articles;
+  ArticleHeaders.find({'username': username},function(err,articles){
+    if(err){
+      console.log(" Error when find article by id");
+      return done(err,null);
+    }
+    if(articles) {
+      return done(null, articles);
+    }
+    else {
+      return done(null, null , {message:"You done have any article"});
+    }
+  })
+};
+app.get('/get-categories-list',function(req,res){
+  Categories.find({}).sort({name: 1}).exec(function(err,categories){
+    if(err) return;
+    res.send(categories);
+  });
+});
 app.get('/home', function(req, res) {
   res.render('pages/index');
 });
@@ -193,26 +240,67 @@ app.get('/article',function(req,res){
 app.get('/new-article',function(req,res){
   res.render('pages/index');
 });
+app.get('/category/:key',function(req,res){
+  res.render('pages/index');
+});
 app.get('/get-article-content:id',function(req,res){
-    res.send(findArticleById(req.id),function(err,article,info){
+    findArticleById(req.id,function(err,article,info){
       if(err){
         console.log(err);
         res.send("Error");
         return;
       }
       if(!article){
+        console.log("not found");
         res.send({message:info});
       }else {
         res.send({article: article});
       }
 
-    })
+    });
 });
-app.get('/abc',function(req,res){
-
+app.get('/getuserarticles/:username',function(req,res){
+  findArticleByUsername(req.params.username,function(err,article,info){
+    if(err){
+        console.log(err);
+        res.send("Error");
+        return;
+      }
+      if(!article){
+        console.log("not found");
+        res.send({message:info});
+      }else {
+        res.send({articles: article});
+      }
+  });
+});
+app.get('/articles-list',function(req,res){
+  ArticleHeaders.find({},function(err,articles){
+    if(err){
+      res.send("Error");
+      return;
+    }
+    if(articles){
+      res.send(articles);
+    }
+  })
 });
 app.post('/new-article/new',function(req,res){
 
+});
+app.post('/change-pass/',function(req,res){
+  changePass(req.body._id,req.body.oldPass,req.body.newPass,function(err,isChanged,info){
+    if(err){
+      console.log(err);
+      res.send("Error");
+      return;
+    }
+    if(isChanged){
+      res.send({message: "success"});
+    }else{
+      res.send({message: info.message});
+    }
+  });
 });
 app.post('/login', passport.authenticate('login', {
     successRedirect: '/loginsuccess',

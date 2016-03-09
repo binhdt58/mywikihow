@@ -1,4 +1,38 @@
-<i>Hiển thị thông tin tài khoản người dùng, cho phép đổi mật khẩu, xem bài mình đã viết</i>
-<p>Username: {{user.username}}</p>
-<p>Email: {{user.email}}</p>
-<button ng-click = "logout()">Log out</button>
+<div class = "col-md-7 col-md-offset-1 bg-info" ng-init = "changePasswordPanel = false">
+	<h2>Profile:</h2>
+	<h4>Username: {{user.username}}</h4>
+	<h4>Email: {{user.email}}</h4>
+	<h5 ng-click = "changePasswordPanel=!changePasswordPanel">  Change password <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></h5>
+	<div ng-show = "changePasswordPanel" class = "panel bg-warning"><form class = "panel-body panel-info "ng-submit = "changePass()" >
+		<div ng-show = "error!=null" class="alert alert-danger" role="alert">{{error}}</div>
+		<div ng-show = "success!=null" class="alert alert-success" role="alert">{{success}}</div>
+		<div class="form-group">
+	        <label for="password">Old password:</label>
+	        <input type="password" class="form-control" id="password" ng-model = "oldPass" placeholder="Password">
+    	 </div>
+		<div class="form-group">
+	        <label for="password">New password:</label>
+	        <input type="text" class="form-control" id="password" ng-model = "password" placeholder="Password">
+    	 </div>
+     	<div class="form-group">
+	        <label for="password">Confirm new password:</label>
+	        <input type="text" class="form-control" id="password" ng-model = "passwordConfirm" placeholder="Re-enter password">
+     	</div>
+     	<button class = "btn btn-info" type = "submit">Change</button>
+     	<button class = "btn btn-info" ng-click = "changePasswordPanel = false">Cancel</button>
+	</form></div>
+	<h2>Your articles: </h2>
+	<div>
+
+		<i ng-show = "articles.length==0" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>   You dont have any articles yet</i>
+		<ul>
+			<li ng-repeat = "article in articles">
+				<h4>{{article.title}}</h4>
+				<p><span><strong>Category: </strong><i>{{categories[article.category]}}.  </i></span>
+				<span><strong> Last update: </strong><i>{{article.date}}</i></span></p>
+				<a class = "text-left" ng-href="/article?id={{article._id}}">Click to view detail -></a>
+			</li>
+		</ul>
+	</div>
+	<button class = "btn btn-info" ng-click = "logout()">Log out</button>
+</div>

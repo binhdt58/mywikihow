@@ -1,9 +1,17 @@
 var app = angular.module("appController",['ngCookies']);
-app.run(['$cookies','$window','$rootScope',function($cookies,$window,$rootScope){
+app.run(['$cookies','$window','$rootScope','$http',function($cookies,$window,$rootScope,$http){
 	$rootScope.user = null;
+	$http({
+		method: 'GET',
+		url: '/get-categories-list'
+	}).then(function(response){
+		$rootScope.categories = response.data.map(function(a) {return a.name;});
+	},function(){});
+	
 	if($window.sessionStorage.token) $rootScope.user = $window.sessionStorage.user;
 	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
 }]);
+
 app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies','$window',function($scope,$location,$http,$rootScope,$cookies,$window){
 	$scope.search = function(key){
 		if(key.length==0) $location.url('/home');
@@ -16,11 +24,13 @@ app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies
 		$http({
 			method: 'POST',
 			url: '/login',
+			headers: {
+  				'Content-Type': 'application/json'
+ 			},
 			data: user
 			}).then(function(response){
 				var data = angular.fromJson(response.data);
 				if(data.user){
-					console.log(data.user);
 					$rootScope.user = data.user;
 					$cookies.putObject('user',$rootScope.user);
 					if($scope.remenberMe){
@@ -38,7 +48,26 @@ app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies
 	}
 
 }]);
-app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$location',function($scope,$rootScope,$cookieStore,$window,$location){
+app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$location','$http',function($scope,$rootScope,$cookieStore,$window,$location,$http){
+	$rootScope.title = $rootScope.user.username + " Profile";
+	$scope.error = null;
+	$scope.success = null;
+	$scope.articles = [];
+	$http({
+		method: 'GET',
+		url: '/getuserarticles/'+$rootScope.user.username,
+	}).then(function(response){
+		var data = angular.fromJson(response.data);
+		console.log(data);
+		if(data.articles){
+			$scope.articles = data.articles;
+		}
+		else {
+			$scope.articles = [data.message];
+		}
+	},function(){
+
+	});
 	$scope.logout = function(){
 		console.log("logged out");
 		delete $rootScope.user;
@@ -46,12 +75,61 @@ app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$l
 		$cookieStore.remove('user');
 		$location.url('/home');
 	}
+	$scope.changePass = function(){
+		if($scope.password!=$scope.passwordConfirm) {
+			console.log("not match");
+			$scope.error = "Password not match";
+			$scope.success = null;
+			return;
+		}
+		if($scope.password.length<8){
+			console.log("length problem")
+			$scope.error = "Password must be at least 8 characters ";
+			$scope.success = null;
+			return;
+		}
+		var xdata = {};
+		xdata._id= $rootScope.user._id;
+		xdata.oldPass =  $scope.oldPass;
+		xdata.newPass =  $scope.password;
+		$http({
+			method: 'POST',
+			url: '/change-pass/',
+			data: xdata
+		}).then(function(response){
+			var data = angular.fromJson(response.data);
+			console.log(data);
+			if(data.message=='success'){
+				$scope.success = "Congratulation! Your password has been updated";
+				$scope.error = null;
+				console.log($scope.success);
+				$scope.oldPass = "";
+				$scope.password = "";
+				$scope.passwordConfirm = "";
+			}
+			else {
+				$scope.error = data.message;
+				$scope.success = null;
+			}
+			},function(){
+		});
+	}
 }]);
 
-app.controller("HomepageCtrl",[function(){
+app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope,$scope,$http){
+	$rootScope.title = "Home";
+	$http({
+		method: 'GET',
+		url: 'articles-list',
 
+	}).then(function(response){
+		var data = angular.fromJson(response.data);
+		$scope.articles = data;
+	},function(){
+
+	});
 }]);
-app.controller('SignUpCtrl',['$http','$scope','$rootScope',function($http,$scope,$rootScope){
+app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function($http,$scope,$rootScope,$location){
 	$scope.error = null;
 	$scope.signup = function(){
 		
@@ -76,6 +154,7 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope',function($http,$scope
 				if(data.user){
 					console.log(data.user);
 					$rootScope.user = data.user;
+					$location.url('/home');
 				}else{
 					console.log(data.message);
 					$scope.error = data.message[0];
@@ -85,6 +164,9 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope',function($http,$scope
 	}
 }]);
 
-app.controller('SearchCtrl',[function(){
-
+app.controller('SearchCtrl',['$rootScope','$scope','$http',function($scope,$rootScope,$http){
+	$rootScope.title = "Search result";
+}]);
+app.controller('CategoryCtrl',['$rootScope','$scope','$http',function($scope,$rootScope,$http){
+	$rootScope.title = "Search result";
 }]);

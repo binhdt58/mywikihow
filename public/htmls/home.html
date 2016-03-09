@@ -1,2 +1,18 @@
-<h1>Đây là trang chủ hiển thị các bài viết nổi bật</h1>
-<a href="/article?id=1&title=none">Test</a>
+<div class = "col-md-7 col-md-offset-1">
+	<ul>
+		<li ng-repeat = "article in articles">
+			<h4>{{article.title}}</h4>
+			<p><span><strong>Category: </strong><i>{{categories[article.category]}}.  </i></span>
+			<span><strong> Last update: </strong><i>{{article.date}}</i></span></p>
+			<a class = "text-left" ng-href="/article?id={{article._id}}">Click to view detail -></a>
+		</li>
+	</ul>
+</div>
+<div class = "col-md-3 bg-info">
+		<h3>Categories</h3>
+		<div ng-repeat = "category in categories">
+			<img ng-src="images/category/{{category}}.png">
+			<a class = "text-left" ng-href="/category/{{category}}">{{category}}</a>
+		</div>
+	</ul>
+</div>
