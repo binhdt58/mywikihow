@@ -12,10 +12,10 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http',function($s
 			title: "This is a title",
 			author: "son",
 			category: "Health",
+			description: "This is a test",
 			image: "image/user/test.png"
 		},
 		content: {
-			description: "This is a test",
 			parts: [{
 				title: "this is parts 1",
 				steps: [{text: "This is step1 of part 1",image: "xxx"},{text: "this is step2 of part 1",image: "xxx"}]

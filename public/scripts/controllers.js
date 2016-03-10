@@ -162,8 +162,15 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function(
 		});
 	}
 }]);
-app.controller("SearchCtrl",['$rootScope','$scope','$http',function($rootScope,$scope,$http){
+app.controller("SearchCtrl",['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
 	$rootScope.title = "Search";
+	$scope.results = [];
+	$http({
+		method: 'GET',
+		url: '/article-search'+$stateParams.key
+	}).then(function(response){
+		$scope.results = angular.fromJson(response.data);
+	},function(){});
 }]);
 app.controller('CategoryCtrl',['$rootScope','$scope','$http',function($rootScope,$scope,$http){
 	$rootScope.title = "Search result";

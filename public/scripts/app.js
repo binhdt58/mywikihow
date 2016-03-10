@@ -37,7 +37,7 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       controller: 'CategoryCtrl'
     })
     .state('search',{
-      url: '/search/:key',
+      url: '/search?key',
       templateUrl: 'htmls/search.html',      
       controller: 'SearchCtrl'
     })

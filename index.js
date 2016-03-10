@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var flash = require('connect-flash');
 var bCrypt = require("bcrypt-nodejs");
+var elasticsearch = require('elasticsearch');
 app.use(cookieParser());
 //setting
 app.set('port', (process.env.PORT || 5000));
@@ -17,6 +18,7 @@ app.use( bodyParser.urlencoded({ extended: false }) );
 app.use (bodyParser.json());
 //database
 var mongoose = require('mongoose');
+var mongoosastic = require('mongoosastic');
 mongoose.connect('mongodb://localhost:27017/wikihow?auto_reconnect');
 //model User
 var Schema = mongoose.Schema;
@@ -33,12 +35,17 @@ var Category = new Schema({
 var Categories = mongoose.model('category',Category);
 var ArticleHeader = new Schema({
   id: Number,
-  title: String,
+  title: {type: String, es_indexed: true},
   author: String,
-  description: String,
+  description: {type: String,es_indexed: true},
   category: String,
   content: Schema.Types.ObjectId
 }, { collection: 'articles'});
+
+var esClient = new elasticsearch.Client({host: 'http://127.0.0.1:9200'});
+ArticleHeader.plugin(mongoosastic, {
+    esClient: esClient
+});
 var ArticleHeaders =mongoose.model('article',ArticleHeader);
 var ArticleContent = new Schema({
   rate: [[String]],
@@ -286,8 +293,14 @@ app.get('/articles-list',function(req,res){
     }
   })
 });
-app.post('/new-article/new',function(req,res){
-
+app.get('/article-search:key',function(req,res){
+  ArticleHeaders.search({query_string: {query: req.params.key }}, {hydrate:true},function(err,results){
+    if(err){
+      console.log(err);
+      return;
+    }
+    res.send(results.hits.hits);
+  });
 });
 app.post('/change-pass/',function(req,res){
   changePass(req.body._id,req.body.oldPass,req.body.newPass,function(err,isChanged,info){
@@ -322,6 +335,7 @@ app.post('/post-article', function(req,res){
     newHeader.image = header.image;
     newHeader.category = header.category;
     newHeader.content = contentId;
+    newHeader.description = header.description;
     newHeader.save(function(err,headerReturn){
       if(err) {
         res.send(err);

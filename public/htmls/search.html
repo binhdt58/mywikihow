@@ -1,1 +1,13 @@
-<h1>Kết quả tìm kiếm</h1>
+<h3>Found {{results.length}} results:</h3>
+<div class = "col-md-7 col-md-offset-1">
+	<ul>
+		<li ng-repeat = "article in results">
+			<h4>{{article.title}}</h4>
+			<p><span><strong>Category: </strong><i>{{article.category}}.  </i></span>
+			<span><strong> Last update: </strong><i>{{article.date}}</i></span></p>
+
+			<p><i>{{article.description}}</i></p>
+			<a class = "text-left" ng-href="/article/{{article._id}}">Click to view detail -></a>
+		</li>
+	</ul>
+</div>
