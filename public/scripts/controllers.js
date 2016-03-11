@@ -1,4 +1,4 @@
-var app = angular.module("appController",['ngCookies','ui.router']);
+var app = angular.module("appController",['ngCookies','ui.router','ngFileUpload']);
 app.run(['$cookies','$window','$rootScope','$http',function($cookies,$window,$rootScope,$http){
 	$rootScope.user = null;
 	if($window.sessionStorage.token) $rootScope.user = $window.sessionStorage.user;

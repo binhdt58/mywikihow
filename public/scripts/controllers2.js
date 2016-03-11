@@ -5,7 +5,7 @@ var app = angular.module('appController');
 //	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
 //}]);
 
-app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http',function($scope,$rootScope,$http){
+app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',function($scope,$rootScope,$http,Upload){
 	$rootScope.title = "New articles";
 	$scope.data = {
 		header: {
@@ -35,6 +35,21 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http',function($s
 
 		},function(){});
 	};
+	$scope.imageUrl = null;
+	$scope.upload = function (file) {
+        Upload.upload({
+            url: '/upload-image',
+            data: {file: file}
+        }).then(function (res) {
+            $scope.imageUrl = res.data;
+            console.log($scope.imageUrl);
+        }, function (res) {
+            console.log('Error status: ' + res.status);
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
 }]);
 app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
 

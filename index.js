@@ -19,7 +19,7 @@ app.use (bodyParser.json());
 //database
 var mongoose = require('mongoose');
 var mongoosastic = require('mongoosastic');
-mongoose.connect('mongodb://localhost:27017/wikihow?auto_reconnect');
+mongoose.connect('mongodb://127.0.0.1:27017/wikihow?auto_reconnect');
 //model User
 var Schema = mongoose.Schema;
 var User = new Schema({
@@ -221,6 +221,15 @@ var findArticleByUsername = function(username, done){
     }
   })
 };
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart({
+    uploadDir: 'public/images/user/'
+});
+app.post('/upload-image', multipartMiddleware, function(req, res) {
+  if(req.files.file) res.send(req.files.file.path.slice(6));
+  delete req.files;
+  // don't forget to delete all req.files when done 
+});
 app.get('/get-categories-list',function(req,res){
   Categories.find({}).sort({name: 1}).exec(function(err,categories){
     if(err) return;
