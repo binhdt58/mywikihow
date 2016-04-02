@@ -1,3 +1,5 @@
+var SystemInfo = {numberOfUsers: 0,numberOfArticles: 0};
+var pageSize = 10;
 var express = require('express');
 var app = express();
 var router = express.Router();
@@ -6,6 +8,7 @@ var expressSession = require('express-session');
 var flash = require('connect-flash');
 var bCrypt = require("bcrypt-nodejs");
 var elasticsearch = require('elasticsearch');
+var fs = require('fs');
 app.use(cookieParser());
 //setting
 app.set('port', (process.env.PORT || 5000));
@@ -25,12 +28,14 @@ var Schema = mongoose.Schema;
 var User = new Schema({
 	username: String,
 	password: String,
-  email: String
+  email: String,
+  role: String
 }, { collection: 'users' });
 var Users = mongoose.model('user',User);
 var Category = new Schema({
   name: String,
-  id: Number
+  id: Number,
+  numberArticles: Number
 },{collection: 'categories'});
 var Categories = mongoose.model('category',Category);
 var ArticleHeader = new Schema({
@@ -66,6 +71,20 @@ app.use(expressSession({
     resave: true,
     saveUninitialized: true
 }));
+var countUsers = function(){
+  Users.count({}).exec(function(err,c){
+    SystemInfo.numberOfUsers = c;
+    console.log(SystemInfo.numberOfUsers);
+  });
+};
+var countArticles = function(){
+  ArticleHeaders.count({},function(err,c){
+      SystemInfo.numberOfArticles = c;
+      console.log(SystemInfo.numberOfArticles);
+  });
+};
+countUsers();
+countArticles();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -138,15 +157,17 @@ passport.use('signup', new LocalStrategy({
           // set the user's local credentials
           newUser.username = username;
           newUser.password = createHash(password);
+          newUser.role = "user";
           newUser.email = req.param('email');
- 
+          
           // save the user
           newUser.save(function(err) {
             if (err){
               console.log('Error in Saving user: '+err);  
               throw err;  
             }
-            console.log('User Registration succesful');    
+            SystemInfo.numberOfUsers++;
+            console.log('user registration succesful');    
             return done(null, newUser);
           });
         }
@@ -225,6 +246,9 @@ var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart({
     uploadDir: 'public/images/user/'
 });
+var categoryUpload = multipart({
+  uploadDir: 'public/images/category/'
+})
 app.post('/upload-image', multipartMiddleware, function(req, res) {
   if(req.files.file) res.send(req.files.file.path.slice(6));
   delete req.files;
@@ -238,6 +262,12 @@ app.get('/get-categories-list',function(req,res){
 });
 app.get('/home', function(req, res) {
   res.render('pages/index');
+});
+app.get('/admin/:sub',function(req,res){
+  res.render('pages/admin');
+});
+app.get('/admin',function(req,res){
+  res.render('pages/admin');
 });
 app.get('/',function(req,res){
   res.render('pages/index');
@@ -325,6 +355,121 @@ app.post('/change-pass/',function(req,res){
     }
   });
 });
+app.get('/ad/articles/get*',function(req,res){
+    var page = req.query.page;
+    var skip = pageSize*(page-1);
+    var limit = SystemInfo.numberOfArticles-skip;
+    if(limit>10)  limit = 10;
+    console.log(skip);
+    console.log(limit);
+    ArticleHeaders.find({})
+      .skip(skip)
+      .limit(limit)
+    //  .populate('stuff')
+      .exec(function (err, articles) { 
+          if(err){
+            console.log(err);
+            return;
+          }
+          res.send({articles: articles,totalPage: Math.ceil(SystemInfo.numberOfArticles/pageSize)});
+      });
+});
+app.post('/ad/articles/remove*',function(req,res){
+
+    ArticleHeaders.find({_id: req.query.id}).remove().exec(function(err){
+      if(err) console.log(err);
+      SystemInfo.numberOfArticles--;
+    });
+
+    res.redirect('/ad/articles/get?page='+req.query.page);
+});
+app.get('/ad/users/get*',function(req,res){
+    var page = req.query.page;
+    var skip = pageSize*(page-1);
+    var limit = SystemInfo.numberOfArticles-skip;
+    if(limit>10)  limit = 10;
+    Users.find()
+      .skip(skip)
+      .limit(limit)
+      .populate('stuff')
+      .exec(function (err, users) { 
+          if(err){
+            console.log(err);
+            return;
+          }
+          console.log(SystemInfo.numberOfUsers);
+          res.send({users: users,totalPage: Math.ceil(SystemInfo.numberOfUsers/pageSize)});
+      });
+});
+app.post('/ad/users/search*',function(req,res){
+  Users.find({username: new RegExp(req.query.username,"i")},function(err,users){
+    if(err) {
+      console.log(err);
+      return;
+    }
+    res.send(users);
+  })
+});
+app.post('/ad/users/remove*',function(req,res){
+    Users.find({username: req.query.username}).remove().exec(function(err){
+      if(err) console.log(err);
+      SystemInfo.numberOfUsers--;
+    });
+
+    res.redirect('/ad/users/get?page='+req.query.page);
+});
+app.post('/ad/users/role*',function(req,res){
+  Users.findOneAndUpdate({username: req.query.username},{role: req.query.role},function(err){
+        //console.log(Users.findOne({name: req.query.username}));
+        if(!err){
+          res.send("OK");
+        }
+        else{
+          res.send("FAIL");
+        }
+  });
+})
+app.post('/ad/category/remove/:category',function(req,res){
+    Categories.findOne({name: req.params.category}).remove().exec();
+    fs.unlink('public/images/category/'+req.params.category+".png",function(err){
+      if(err) console.log(err);
+    });
+    res.redirect('/get-categories-list');
+});
+app.post('/ad/category/new/:category',function(req,res){
+    newCategory = new Categories();
+    newCategory.name = req.params.category;
+    newCategory.numberArticles =0;
+    newCategory.save(function(err){
+       res.redirect('/get-categories-list');
+    });
+})
+app.post('/ad/category/rename*',function(req,res){
+    Categories.findOneAndUpdate({name: req.query.oldName},{name: req.query.newName},function(err){
+      fs.rename('public/images/category/'+req.query.oldName+".png",'public/images/category/'+req.query.newName+".png",function(err){
+         if(err) console.log(err);
+          res.send("OK");
+      });
+    });
+})
+app.post('/ad/category/upimage/:category', categoryUpload, function(req, res) {
+  link = 'public/images/category/'+req.params.category+".png";
+  if(!req.files){
+    res.send("ok");
+  }
+  path = req.files.file.path;
+  fs.unlink(link,function(err){
+    if(err) console.log(err); 
+    
+  });
+ fs.rename(req.files.file.path,link,function(err){
+         if(err) console.log(err);
+         });
+  delete req.files;
+  res.send("OK");
+
+  //if(req.files.file) res.send(req.files.file.path.slice(6));
+});
 app.post('/post-article', function(req,res){
   var header = req.body.header;
   var content = req.body.content;
@@ -350,6 +495,17 @@ app.post('/post-article', function(req,res){
         res.send(err);
         return;
     }
+
+    SystemInfo.numberOfArticles++;
+    Categories.findOne({name: header.category},function(err,c){
+      if(err) return;
+      if(c){
+        console.log(c);
+        numberArticles = c.numberArticles;
+        numberArticles++;
+        c.update({numberArticles: numberArticles}).exec();
+      }
+    });
     res.send("Complete");
   });
   });
@@ -382,5 +538,3 @@ app.get('/failsignup',function(req,res){
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-

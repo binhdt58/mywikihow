@@ -1,0 +1,44 @@
+<div>
+	<h2>Categories</h2>
+	<div class = "pull-right">
+		<span><b>New category: </b></span>
+		<input type = "text" ng-model = "name">
+		<button ng-click = "createNew(name)"><span class="glyphicon glyphicon-plus" aria-hidden = "true"></span></button>
+	</div>
+	<table class = "table table-striped ">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Categories</th>
+				<th># Articles</th>
+				<th>Icon</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "category in categories" >
+				<th>{{$index}}</th>
+				<th>
+					<p ng-hide = "edit" ng-click = "edit = true">{{category.name}}</p>
+					<div ng-show = "edit">
+						<input type = "text" ng-model = "newname" placeholder = "{{category.name}}">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click = "changeName(newname,$index);edit = false"></span>
+						<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click = "edit = false"></span>
+					</div>
+				</th>
+				<th>{{category.numberArticles}}</th>
+				<th ng-init = "change = false">
+					<img ng-src="images/category/{{category.name}}.png" height=20 ng-click = "change = true">
+					<div ng-show = "change">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click = "change = false"></span>
+						<span  class="glyphicon glyphicon-upload" aria-hidden="true"  ngf-select="upload($file,category.name)" accept="image/*" ></span>
+					</div>
+					
+				</th>
+				<th><button ng-click = "remove(category.name)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
+				<th><a ng-click = "goto(category.name)">Detail>></a></th>
+			</tr>
+		</tbody>
+	</table>	
+</div>

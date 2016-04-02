@@ -1,18 +1,5 @@
 'use strict';
 var app = angular.module('WikiHow', ['ui.router','appController']);
-app.directive('whenEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
-                    scope.$eval(attrs.myEnter);
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
 app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
   $urlRouterProvider.otherwise('/home');
   $stateProvider
