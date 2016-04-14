@@ -9,24 +9,29 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 	$rootScope.title = "New articles";
 	$scope.data = {
 		header: {
-			title: "This is a title",
-			author: "son",
-			category: "Health",
-			description: "This is a test",
-			image: "image/user/test.png"
+			title: "",
+			author: "",
+			category: "",
+			description: "",
+			image: ""
 		},
 		content: {
 			parts: [{
-				title: "this is parts 1",
-				steps: [{text: "This is step1 of part 1",image: "xxx"},{text: "this is step2 of part 1",image: "xxx"}]
-			},{
-				title: "this is parts 2",
-				steps: [{text: "This is step1 of part 2",image: "xxx"},{text: "this is step2 of part 2",image: "xxx"}]
+
+				title: "",
+				steps: [{part_index:0 ,title: "",text: "",image: ""}]
 			}
 			]
 		}
 	};
+	//var data = {header: {},content: {}};
+
 	$scope.postArticle = function(){
+		$scope.data.header.author = $rootScope.user.username;
+		/*data.header.title = $scope.article_title;
+		data.header.category = $scope.category;
+		data.header.description = $scope.article_intro;*/
+		$scope.data.header.image = $scope.data.content.parts[0].steps[0].image;
 		$http({
 			method: "POST",
 			url: "/post-article",
@@ -35,21 +40,36 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 
 		},function(){});
 	};
+	$scope.addStep = function (index){
+		$scope.data.content.parts[index].steps.push({part_index:index ,text: "",image: ""});
+	};
+	$scope.addPart = function (){
+		$scope.data.content.parts.push({title: "",
+				steps: [{part_index: $scope.data.content.parts.length ,text: "",image: ""}]
+			}); 
+		console.log($scope.data.content.parts);
+
+	};
 	$scope.imageUrl = null;
-	$scope.upload = function (file) {
+	$scope.upload = function (file,index1,index2) {
         Upload.upload({
             url: '/upload-image',
             data: {file: file}
         }).then(function (res) {
-            $scope.imageUrl = res.data;
-            console.log($scope.imageUrl);
+            $scope.data.content.parts[index1].steps[index2].image = res.data;
+            console.log("link:" +$scope.data.content.parts[index1].steps[index2].image );
         }, function (res) {
             console.log('Error status: ' + res.status);
         }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
         });
+
     };
+    $http({
+		method: 'GET',
+		url: '/get-categories-list'
+	}).then(function(response){
+		$scope.categories = response.data.map(function(a) {return a.name;});
+	},function(){});
 }]);
 app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
 
@@ -60,5 +80,11 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 		}).then(function(response){
 			$scope.data = response.data;
 			$rootScope.title = $scope.data.header.title;
+	},function(){});
+	$http({
+		method: 'GET',
+		url: '/get-categories-list'
+	}).then(function(response){
+		$scope.categories = response.data.map(function(a) {return a.name;});
 	},function(){});
 }]);

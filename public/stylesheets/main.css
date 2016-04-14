@@ -73,3 +73,28 @@
     top: 11px;
     left: -6px;
 }
+.brand {
+    background-color: #5cb85c;
+    color: #eee;
+    box-shadow: 5px 5px 5px #888888;
+}
+.well {
+    background-color: #eeeeee;
+}
+.shadow {
+    box-shadow: 5px 5px 5px #888888;
+    
+}
+.text-article {
+    font-size: 18px;
+    text-align: justify;
+
+}
+.step {
+    font-size: 54px;
+}
+.carousel-inner > .item > img{
+    width: 100%;
+    height: 450px;
+    margin: auto;
+}

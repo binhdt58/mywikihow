@@ -44,6 +44,7 @@ var ArticleHeader = new Schema({
   author: String,
   description: {type: String,es_indexed: true},
   category: String,
+  image: String,
   content: Schema.Types.ObjectId
 }, { collection: 'articles'});
 
@@ -58,8 +59,9 @@ var ArticleContent = new Schema({
     title: String,
     video: String,
     steps: [{
+      title:  String,
       text: String,
-      images: [String]
+      image: String
     }]
   }]
 },{ collection: 'articleContent'});

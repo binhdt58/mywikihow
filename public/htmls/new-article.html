@@ -1,8 +1,77 @@
-<div>
-	<h3>An Example data: </h3>
-	<p>{{data}}</p>
-	<button ng-click = "postArticle()">Post article with data above</button>
-	<button ngf-select="upload($file)" accept="image/*">Upload image</button>
-	
+
+<div class="container col-md-7 col-md-offset-1">
+	<div class="blog-header col-md-11  well shadow ">
+		<h2 class="blog-title"> Creating new Article</h2>
+	</div>
+	<form class="col-md-11  well shadow" ng-submit = 'postArticle()' >
+		<div class="form-group">
+		  	<label for = "title">Title</label>
+		   	<input type="text" class="form-control" ng-model="data.header.title" placeholder="How to do anything"><br>
+		    <label for = "category">Category</label>
+		    <input type="text" class="form-control" ng-model="data.header.category" placeholder="About"><br>
+			<label for = "description">Introduction</label>
+			<textarea class="form-control" rows="7" ng-model="data.header.description" placeholder="Enter your introduction here"></textarea>
+		</div>
+	</form>
+	<form class="col-md-11  well shadow" >
+		<div class="radio ">
+			This article has:
+			<label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-value="1" ng-model="checked">
+			    Multiple Parts      
+			</label>
+			<label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios2" ng-value="0" ng-model="checked">
+			    Neither
+			</label>
+		</div>
+
+		<div class="form-group" ng-repeat="part in data.content.parts" >
+			<div ng-show="checked">
+				<h2>Part {{$index +1}}</h2>
+				<input type="text" class="form-control" ng-model="part.title" placeholder="Title of part "><br>
+			</div>
+			<div class="form-group" ng-repeat="step in part.steps">
+				<label>Step {{$index +1}}</label>
+				<input type="text" class="form-control" ng-model="step.title" placeholder="Title of step "><br>
+				<textarea class="form-control" ng-model="step.text" rows="9"></textarea><br>
+				<table style="width:100%">
+					  <tr>
+					    <td><label>Picture of step</label><br><br><br><br><br><br>
+					    	<button ngf-select="upload($file,step.part_index,$index)" accept="image/*" class="pull-down btn btn-default">Upload image</button>
+					    </td>
+					    <td>
+					    	<div class="pull-right">
+						    <a href="#" >
+						      <p><img src="{{step.image}}" class="thumbnail" width = "218px" height="218px"></p>
+						    </a>
+						</div>
+					    </td> 
+					  </tr>
+					</table>
+			</div>
+			<button ng-click = "addStep($index)" class="pull-right btn btn-success">Add Step</button>
+		</div>
+
+		<div class="form-group" ng-show="checked">
+			<br><br><br>
+			Do you have another part
+			<button ng-click = "addPart()" class="pull-right btn btn-success">Add a part</button>
+		</div>
+
+		<div class="form-group">
+			<br><br><br>
+		    <button ng-click = "postArticle()" class="btn btn-success">Post article with data above</button>
+			
+		</div>
+		
+	</form>
 </div>
-<img ng-src="{{imageUrl}}" width = "300px">
+<div class = "col-md-3 bg-info">
+		<h3>Categories</h3>
+		<div ng-repeat = "category in categories">
+			<img ng-src="images/category/{{category}}.png">
+			<a class = "text-left" ng-href="/category/{{category}}">{{category}}</a>
+		</div>
+	</ul>
+</div>

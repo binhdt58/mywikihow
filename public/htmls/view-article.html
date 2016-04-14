@@ -1,2 +1,34 @@
-<h1>Hiển thị bài viết</h1>
-<p>{{data}}</p>
+
+<div class="container col-md-7 col-md-offset-1">
+	<div class="blog-header col-md-11 well shadow">
+		<h1 class="blog-title text-uppercase"> {{data.header.title}} </h1>
+		<b> by <a href="#">{{data.header.author}} </a> </b>
+		<p></p> 
+		<p class="blog-description text-article "> {{data.header.description}} </p>
+		<img ng-src="{{data.header.image}}" width = "654px" height="368">
+	</div>
+		<div class="" ng-repeat = "t in data.content.parts">
+			<div class="blog-post">
+				<nav class=" col-md-11 " ng-show = "data.content.parts.length >1">
+					<strong>
+						<a class="col-md-2 " >Part <strong>{{$index + 1}}</strong></a>
+						<h2 class="navbar-text">{{t.title}} </h2>
+					</strong>
+				</nav>
+				<div class = "col-md-11 well shadow text-article "ng-repeat = "x in t.steps">
+
+					<img ng-src="{{x.image}}" width = "654px" height="368">
+					<h1 class="step navbar-brand">{{$index + 1}}</h1>
+					<p> <strong>{{x.title}}.</strong> {{x.text}}</p>
+				</div>
+			</div>
+		</div>
+</div>
+<div class = "col-md-3 bg-info">
+		<h3>Categories</h3>
+		<div ng-repeat = "category in categories">
+			<img ng-src="images/category/{{category}}.png">
+			<a class = "text-left" ng-href="/category/{{category}}">{{category}}</a>
+		</div>
+	</ul>
+</div>
