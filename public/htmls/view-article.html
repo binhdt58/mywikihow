@@ -5,15 +5,14 @@
 		<b> by <a href="#">{{data.header.author}} </a> </b>
 		<p></p> 
 		<p class="blog-description text-article "> {{data.header.description}} </p>
-		<img ng-src="{{data.header.image}}" width = "654px" height="368">
+		
 	</div>
 		<div class="" ng-repeat = "t in data.content.parts">
 			<div class="blog-post">
-				<nav class=" col-md-11 " ng-show = "data.content.parts.length >1">
-					<strong>
-						<a class="col-md-2 " >Part <strong>{{$index + 1}}</strong></a>
-						<h2 class="navbar-text">{{t.title}} </h2>
-					</strong>
+				<nav class="navbar col-md-11 well shadow" ng-show = "data.content.parts.length >1">
+					<a class="navbar-brand brand" >Part {{$index + 1}}</a>
+					<h2 class="navbar-text">{{t.title}} </h2>
+				
 				</nav>
 				<div class = "col-md-11 well shadow text-article "ng-repeat = "x in t.steps">
 

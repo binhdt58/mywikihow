@@ -7,8 +7,30 @@
 		<div class="form-group">
 		  	<label for = "title">Title</label>
 		   	<input type="text" class="form-control" ng-model="data.header.title" placeholder="How to do anything"><br>
-		    <label for = "category">Category</label>
-		    <input type="text" class="form-control" ng-model="data.header.category" placeholder="About"><br>
+		    <label for = "category">Category</label><br>
+		    	<select ng-model="data.header.category" style="width: 654px; height: 28px "  >
+					<option>WikiHow</option>
+					<option>Arts and Enterainment</option> 
+					<option>Cars and Vehicles</option> 
+					<option>Computers and Electronics</option> 
+					<option>Education and Communications</option> 
+					<option>Family Life</option> 
+					<option>Finance and Business</option> 
+					<option>Health</option> 
+					<option>Hobbies and Traditions</option> 
+					<option>Holidays and Garden</option> 
+					<option>Home and Garden</option>
+					<option>Pets and Animals</option>
+					<option>Philosophy and Religion</option>
+					<option>Relationships</option>
+					<option>Sports and Fitness</option>
+					<option>Travel</option>
+					<option>Work World</option>
+					<option>Youth</option>
+					<option>Other</option>
+
+				</select><br>
+		    <br>
 			<label for = "description">Introduction</label>
 			<textarea class="form-control" rows="7" ng-model="data.header.description" placeholder="Enter your introduction here"></textarea>
 		</div>

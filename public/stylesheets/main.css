@@ -98,3 +98,162 @@
     height: 450px;
     margin: auto;
 }
+
+
+
+
+
+
+ 
+#mainwrapper {
+  
+}
+
+#mainwrapper .box {
+    
+    cursor: pointer;
+    height: 170px;
+    float: left;
+    
+    position: relative;
+    overflow: hidden;
+    width: 326px;
+   
+}
+ 
+#mainwrapper .box img {
+    position: absolute;
+    left: 0;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+}
+
+#mainwrapper .box .caption {
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    color: #fff;
+    z-index: 100;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+    left: 0;
+}
+
+#mainwrapper .box .full-caption {
+    width: 100%;
+    height: 100%;
+    top: -100%;
+    text-align: center;
+    padding: 15px;
+}
+
+#mainwrapper .box:hover .full-caption {
+    -moz-transform: translateY(100%);
+    -o-transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
+
+#mainwrapper .box1 {
+    
+    cursor: pointer;
+    height: 170px;
+    float: left;
+    
+    position: relative;
+    overflow: hidden;
+    width: 195px;
+   
+}
+ 
+#mainwrapper .box1 img {
+    position: absolute;
+    left: 0;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+}
+
+#mainwrapper .box1 .caption {
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    color: #fff;
+    z-index: 100;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+    left: 0;
+}
+
+#mainwrapper .box1 .full-caption {
+    width: 100%;
+    height: 100%;
+    top: -100%;
+    text-align: center;
+    padding: 15px;
+}
+
+#mainwrapper .box1:hover .full-caption {
+    -moz-transform: translateY(100%);
+    -o-transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
+#mainwrapper .box2 {
+    
+    cursor: pointer;
+    height: 345px;
+    float: left;
+    
+    position: relative;
+    overflow: hidden;
+    width: 333px;
+   
+}
+ 
+#mainwrapper .box2 img {
+    position: absolute;
+    left: 0;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+}
+
+#mainwrapper .box2 .caption {
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    color: #fff;
+    z-index: 100;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out;
+    transition: all 300ms ease-out;
+    left: 0;
+}
+
+#mainwrapper .box2 .full-caption {
+    width: 100%;
+    height: 100%;
+    top: -100%;
+    text-align: center;
+    padding: 30px;
+}
+
+#mainwrapper .box2:hover .full-caption {
+    -moz-transform: translateY(100%);
+    -o-transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
