@@ -65,72 +65,79 @@
 </div>
 
 <div class = "col-md-7 col-md-offset-1 "  >
-	<div class = "row ">
-		<div class="col-lg-3 " id="mainwrapper" >
-			<div id="box-2" class="box1">
-				<a  ng-href="/article/{{articles[articles.length -1]._id}}">
-					<img src="{{articles[articles.length -1].image}}"  class="thumbnail" width="195" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -1].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-5  " id="mainwrapper">
-			<div id="box-2" class="box">
-				<a  ng-href="/article/{{articles[articles.length -2]._id}}">
-					<img src="{{articles[articles.length -2].image}}"  class="thumbnail" width="326" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -2].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3  " id="mainwrapper">
-			<div id="box-2" class="box1">
-				<a  ng-href="/article/{{articles[articles.length -3]._id}}">
-					<img src="{{articles[articles.length -3].image}}"  class="thumbnail" width="195" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -3].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-	</div>
-	<div class = "row ">
-	
-		<div class="col-lg-5  " id="mainwrapper">
-			<div id="box-2" class="box">
-				<a  ng-href="/article/{{articles[articles.length -8]._id}}">
-					<img src="{{articles[articles.length -8].image}}"  class="thumbnail" width="326" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -8].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3  " id="mainwrapper">
-			<div id="box-2" class="box1">
-				<a  ng-href="/article/{{articles[articles.length -7]._id}}">
-					<img src="{{articles[articles.length -7].image}}"  class="thumbnail" width="195" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -7].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-		<div class="col-lg-3  " id="mainwrapper">
-			<div id="box-2" class="box1">
-				<a  ng-href="/article/{{articles[articles.length -10]._id}}">
-					<img src="{{articles[articles.length -10].image}}"  class="thumbnail" width="195" height="170">
-					<span class="caption full-caption">
-        				<h3>{{articles[articles.length -10].title}}</h3>
-        			</span>
-				</a>
-			</div>
-		</div>
-	</div>
 	<div class="row col-lg-1 " id="mainwrapper">
+		<table cellpadding="0" cellspacing="0" width="80%">
+			<tbody>
+			<tr>
+				<td colspan = "1" rowspan="1">
+					<div id="box-2" class="box1">
+						<a  ng-href="/article/{{articles[articles.length -1]._id}}">
+							<img src="{{articles[articles.length -1].image}}" class="thumbnail" width="195" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -1].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+				<td colspan = "2" rowspan="1">
+					<div id="box-2" class="box">
+						<a  ng-href="/article/{{articles[articles.length -2]._id}}">
+							<img src="{{articles[articles.length -2].image}}" class="thumbnail" width="333" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -2].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+				<td colspan = "1" rowspan="1">
+					<div id="box-2" class="box1">
+						<a  ng-href="/article/{{articles[articles.length -3]._id}}">
+							<img src="{{articles[articles.length -3].image}}" class="thumbnail" width="195" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -3].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+			</tr>	
+			<tr>
+
+				<td colspan = "1" rowspan="1">
+					<div id="box-2" class="box1">
+						<a  ng-href="/article/{{articles[articles.length -5]._id}}">
+							<img src="{{articles[articles.length -5].image}}" class="thumbnail" width="195" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -5].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+				<td colspan = "2" rowspan="1">
+					<div id="box-2" class="box">
+						<a  ng-href="/article/{{articles[articles.length -2]._id}}">
+							<img src="{{articles[articles.length -2].image}}" class="thumbnail" width="333" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -2].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+				<td colspan = "1" rowspan="1">
+					<div id="box-2" class="box1">
+						<a  ng-href="/article/{{articles[articles.length -7]._id}}">
+							<img src="{{articles[articles.length -7].image}}" class="thumbnail" width="195" height="170">
+							<span class="caption full-caption">
+		        				<h3>{{articles[articles.length -7].title}}</h3>
+		        			</span>
+						</a>
+					</div>
+				</td>
+
+				
+			</tr>
+			</tbody>
+		</table>
+
 		<table cellpadding="0" cellspacing="0" width="80%">
 			<tbody>
 			<tr>
@@ -319,7 +326,8 @@
 	
 </div>
 
-<div class = "col-md-3">
+<div class = "col-md-3 bg-info">
+	<br>
 	<div id="Carousel1" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
 	    <ol class="carousel-indicators">
@@ -347,7 +355,7 @@
 	    </div>
 	    <br>
   	</div>
-  	<div class=" bg-info" >
+  	<div class=" " >
 		<h3>Categories</h3>
 		<div ng-repeat = "category in categories">
 			<img ng-src="images/category/{{category}}.png">
