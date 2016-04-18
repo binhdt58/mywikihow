@@ -41,6 +41,7 @@ var Categories = mongoose.model('category',Category);
 var ArticleHeader = new Schema({
   id: Number,
   title: {type: String, es_indexed: true},
+  date: Date,
   author: String,
   description: {type: String,es_indexed: true},
   category: String,
@@ -71,18 +72,19 @@ var passport = require('passport');
 app.use(expressSession({
     secret: "SECRET",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { httpOnly: false }
 }));
 var countUsers = function(){
   Users.count({}).exec(function(err,c){
     SystemInfo.numberOfUsers = c;
-    console.log(SystemInfo.numberOfUsers);
+    //console.log(SystemInfo.numberOfUsers);
   });
 };
 var countArticles = function(){
   ArticleHeaders.count({},function(err,c){
       SystemInfo.numberOfArticles = c;
-      console.log(SystemInfo.numberOfArticles);
+      //console.log(SystemInfo.numberOfArticles);
   });
 };
 countUsers();
@@ -149,7 +151,7 @@ passport.use('signup', new LocalStrategy({
         }
         // already exists
         if (user) {
-          console.log('User already exists');
+          //console.log('User already exists');
           return done(null, false, 
              req.flash('message','User Already Exists'));
         } else {
@@ -169,7 +171,7 @@ passport.use('signup', new LocalStrategy({
               throw err;  
             }
             SystemInfo.numberOfUsers++;
-            console.log('user registration succesful');    
+          // console .log('user registration succesful');    
             return done(null, newUser);
           });
         }
@@ -193,11 +195,11 @@ var changePass = function(_id,oldPass,newPass,done){
           return done(null,true);
         }
         else{
-          console.log("pass not match");
+          //console.log("pass not match");
           return done(null,false,{message: "Wrong password"});
         }
       }else{
-        console.log("user empty");
+        //console.log("user empty");
         return done(null,false,{message: "Server cant find your account, please log out then log in"});
       }
     })
@@ -300,7 +302,7 @@ app.get('/get-article-content:id',function(req,res){
         return;
       }
       if(!article){
-        console.log("not found");
+       // console.log("not found");
         res.send({message:info});
       }else {
         res.send(article);
@@ -316,7 +318,7 @@ app.get('/getuserarticles/:username',function(req,res){
         return;
       }
       if(!article){
-        console.log("not found");
+       // console.log("not found");
         res.send({message:info});
       }else {
         res.send({articles: article});
@@ -357,13 +359,47 @@ app.post('/change-pass/',function(req,res){
     }
   });
 });
+app.get('/get/category/p*',function(req,res){
+  //console.log(req.query);
+    Categories.findOne({name: req.query.category},function(err,c){
+      if(err||!c) {
+        //console.log(c);
+        res.send({articles: [],totalPage: 0});
+        return;
+      }
+      //console.log("category: "+ c);
+      var numArticles  = c.numberArticles;
+      var page = req.query.page;
+      if(page<=0) {
+        res.status(404).end();
+        return;
+      }
+      var skip = pageSize*(page-1);
+      var limit = numArticles-skip;
+      if(limit>10)  limit = 10;
+      ArticleHeaders.find({category: req.query.category})
+        .skip(skip)
+        .limit(limit)
+      //  .populate('stuff')
+        .exec(function (err, articles) { 
+            if(err){
+              console.log(err);
+              return;
+            }
+            //console.log(articles);
+            res.send({articles: articles,totalPage: Math.ceil(numArticles/pageSize)});
+        });
+
+      })
+    
+});
 app.get('/ad/articles/get*',function(req,res){
     var page = req.query.page;
     var skip = pageSize*(page-1);
     var limit = SystemInfo.numberOfArticles-skip;
     if(limit>10)  limit = 10;
-    console.log(skip);
-    console.log(limit);
+    //console.log(skip);
+    //console.log(limit);
     ArticleHeaders.find({})
       .skip(skip)
       .limit(limit)
@@ -381,6 +417,15 @@ app.post('/ad/articles/remove*',function(req,res){
     ArticleHeaders.find({_id: req.query.id}).remove().exec(function(err){
       if(err) console.log(err);
       SystemInfo.numberOfArticles--;
+      Categories.findOne({name: header.category},function(err,c){
+          if(err) return;
+          if(c){
+            console.log(c);
+            numberArticles = c.numberArticles;
+            numberArticles--;
+            c.update({numberArticles: numberArticles}).exec();
+          }
+      });
     });
 
     res.redirect('/ad/articles/get?page='+req.query.page);
@@ -399,7 +444,7 @@ app.get('/ad/users/get*',function(req,res){
             console.log(err);
             return;
           }
-          console.log(SystemInfo.numberOfUsers);
+          //console.log(SystemInfo.numberOfUsers);
           res.send({users: users,totalPage: Math.ceil(SystemInfo.numberOfUsers/pageSize)});
       });
 });
@@ -490,6 +535,7 @@ app.post('/post-article', function(req,res){
     newHeader.author = header.author;
     newHeader.image = header.image;
     newHeader.category = header.category;
+    newHeader.date = new Date();
     newHeader.content = contentId;
     newHeader.description = header.description;
     newHeader.save(function(err,headerReturn){
@@ -502,7 +548,7 @@ app.post('/post-article', function(req,res){
     Categories.findOne({name: header.category},function(err,c){
       if(err) return;
       if(c){
-        console.log(c);
+        //console.log(c);
         numberArticles = c.numberArticles;
         numberArticles++;
         c.update({numberArticles: numberArticles}).exec();
@@ -530,11 +576,11 @@ app.post('/signup', passport.authenticate('signup', {
     res.send({user: req.user});
  })
 app.get('/faillogin',function(req,res){
-  console.log("fail login");
+  //console.log("fail login");
   res.send({message: req.flash('message')});
 });
 app.get('/failsignup',function(req,res){
-  console.log("fail sign up");
+  //console.log("fail sign up");
   res.send({message: req.flash('message')});
 });
 app.listen(app.get('port'), function() {

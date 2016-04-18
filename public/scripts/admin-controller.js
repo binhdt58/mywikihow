@@ -65,7 +65,8 @@ app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$statePar
 	}).then(function(response){
 		$scope.users = response.data.users;
 		$scope.totalPage = response.data.totalPage;
-
+		$scope.pre = prePage();
+		$scope.next = nextPage();
 	},function(){});
 	$scope.remove = function(id){
 		$http({
@@ -87,14 +88,14 @@ app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$statePar
 			if(response.data=="OK") $scope.users[index].role = role;
 		})
 	}
-	$scope.prePage = function(){
+	var prePage = function(){
 		if($stateParams.page>1){
 			return $stateParams.page-1;
 		}else return $stateParams.page;
 	}
-	$scope.nextPage = function(){
+	var nextPage = function(){
 		if($stateParams.page<$scope.totalPage){
-			return $stateParams.page+1;
+			return parseInt($stateParams.page)+1;
 		}else return $stateParams.page;
 	}
 	$scope.search = function(name){
@@ -122,20 +123,22 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 	}).then(function(response){
 		$scope.articles = response.data.articles;
 		$scope.totalPage = response.data.totalPage;
+		$scope.pre = prePage();
+		$scope.next = nextPage();
 
 	},function(){});
 	$scope.page = $stateParams.page;
 	$scope.goto = function(id){
 		$window.open("/article/"+id);
 	}
-	$scope.prePage = function(){
+	var prePage = function(){
 		if($stateParams.page>1){
 			return $stateParams.page-1;
 		}else return $stateParams.page;
 	}
-	$scope.nextPage = function(){
+	var nextPage = function(){
 		if($stateParams.page<$scope.totalPage){
-			return $stateParams.page+1;
+			return parseInt($stateParams.page)+1;
 		}else return $stateParams.page;
 	}
 	$scope.remove = function(_id){
@@ -169,7 +172,7 @@ app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$win
 		$scope.categories = response.data;
 	},function(){});
 	$scope.goto = function(c){
-		$window.open('/category/'+c);
+		$window.open("/category/p?category="+c+"&page=1");
 	};
 	$scope.changeName = function(newname,i){
 		$http({

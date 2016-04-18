@@ -3,6 +3,13 @@ app.run(['$cookies','$window','$rootScope','$http',function($cookies,$window,$ro
 	$rootScope.user = null;
 	if($window.sessionStorage.token) $rootScope.user = $window.sessionStorage.user;
 	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
+	$rootScope.range = function(begin,end){
+		var a = [];
+		for(var i = begin;i<=end;i++){
+			a.push(i);
+		}
+		return a;
+	}
 }]);
 
 app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies','$window',function($scope,$location,$http,$rootScope,$cookies,$window){
@@ -28,6 +35,7 @@ app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies
 					$cookies.putObject('user',$rootScope.user);
 					if($scope.remenberMe){
 						$cookies.putObject('user',$rootScope.user);
+
 					}else{
 						$window.sessionStorage.username = $rootScope.user.username;
 					}
@@ -172,6 +180,32 @@ app.controller("SearchCtrl",['$rootScope','$scope','$http','$stateParams',functi
 		$scope.results = angular.fromJson(response.data);
 	},function(){});
 }]);
-app.controller('CategoryCtrl',['$rootScope','$scope','$http',function($rootScope,$scope,$http){
+app.controller('CategoryCtrl',['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
 	$rootScope.title = "Search result";
+	$scope.category = $stateParams.category;
+	$scope.totalPage = $stateParams.page;
+	$scope.pre = $stateParams.page;
+	$scope.next = $stateParams.page;
+	var prePage = function(){
+		console.log($stateParams.page+" "+$scope.totalPage)
+		if($stateParams.page>1){
+			return $stateParams.page-1;
+		}else return $stateParams.page;
+	}
+	var nextPage = function(){
+		if($stateParams.page<$scope.totalPage){
+			return parseInt($stateParams.page)+1;
+		}else return $stateParams.page;
+	}
+	$http({
+			method: 'GET',
+			url: '/get/category/p?page='+$stateParams.page+"&category="+$stateParams.category,
+	}).then(function(response){
+				var data = angular.fromJson(response.data);
+				$scope.articles = data.articles;
+				$scope.totalPage = data.totalPage;
+				$scope.pre = prePage();
+				$scope.next = nextPage();
+			},function(error){
+		});
 }]);

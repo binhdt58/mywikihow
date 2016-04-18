@@ -19,7 +19,7 @@ app.config(function($stateProvider,$urlRouterProvider,$locationProvider){
       controller: 'ViewArticleCtrl'
     })
     .state('category',{
-      url: '/category/:key',
+      url: '/category/p?category&page',
       templateUrl: 'htmls/category.html',
       controller: 'CategoryCtrl'
     })
