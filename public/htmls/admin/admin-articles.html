@@ -9,9 +9,10 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Username</th>
-				<th>Email</th>
-				<th>Role</th>
+				<th>Name</th>
+				<th>Category</th>
+				<th>Date</th>
+				<th>Views</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -20,11 +21,13 @@
 				<th>{{$index+1+10*(page-1)}}</th>
 				<th>{{article.title}}</th>
 				<th>{{article.category}}</th>
+				<th>{{article.date.substring(0,10)}}</th>
+				<th>{{article.views}}</th>
 				<th><button ng-click = "remove(article._id)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
 				<th><a ng-click = "goto(article._id)">Detail>></a></th>
 			</tr>
 		</tbody>
-	</table>	
+	</table>
 	<ul class="pagination">
     <li>
       <a ng-href="/admin/articles?page={{pre}}" aria-label="Previous">

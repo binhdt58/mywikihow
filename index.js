@@ -46,16 +46,22 @@ var ArticleHeader = new Schema({
   description: {type: String,es_indexed: true},
   category: String,
   image: String,
-  content: Schema.Types.ObjectId
+  views: Number,
+  content: Schema.Types.ObjectId,
+	rate: Schema.Types.ObjectId
 }, { collection: 'articles'});
-
+var Rate = new Schema({
+		totalRate: Number,
+		sumRate: Number,
+		rate: {type: Schema.Types.Mixed,default: []}
+},{collection: 'rate'});
+var Rates = mongoose.model('rate', Rate);
 var esClient = new elasticsearch.Client({host: 'http://127.0.0.1:9200'});
 ArticleHeader.plugin(mongoosastic, {
     esClient: esClient
 });
 var ArticleHeaders =mongoose.model('article',ArticleHeader);
 var ArticleContent = new Schema({
-  rate: [[String]],
   parts: [{
     title: String,
     video: String,
@@ -108,9 +114,9 @@ var LocalStrategy = require('passport-local').Strategy;
 passport.use('login', new LocalStrategy({
     passReqToCallback : true
   },
-  function(req, username, password, done) { 
+  function(req, username, password, done) {
     // check in mongo if a user with username exists or not
-    Users.findOne({ 'username' :  username }, 
+    Users.findOne({ 'username' :  username },
       function(err, user) {
         // In case of any error, return using the done method
         if (err)
@@ -118,16 +124,16 @@ passport.use('login', new LocalStrategy({
         // Username does not exist, log error & redirect back
         if (!user){
           console.log('User Not Found with username '+username);
-          return done(null, false, 
-                req.flash('message', 'User Not found.'));                 
+          return done(null, false,
+                req.flash('message', 'User Not found.'));
         }
-        // User exists but wrong password, log the error 
+        // User exists but wrong password, log the error
         if (!isValidPassword(user,password)){
           console.log('Invalid Password');
-          return done(null, false, 
+          return done(null, false,
               req.flash('message', 'Invalid Password'));
         }
-        // User and password both match, return user from 
+        // User and password both match, return user from
         // done method which will be treated like success
         console.log("success login");
         return done(null, user);
@@ -152,7 +158,7 @@ passport.use('signup', new LocalStrategy({
         // already exists
         if (user) {
           //console.log('User already exists');
-          return done(null, false, 
+          return done(null, false,
              req.flash('message','User Already Exists'));
         } else {
           // if there is no user with that email
@@ -163,22 +169,22 @@ passport.use('signup', new LocalStrategy({
           newUser.password = createHash(password);
           newUser.role = "user";
           newUser.email = req.param('email');
-          
+
           // save the user
           newUser.save(function(err) {
             if (err){
-              console.log('Error in Saving user: '+err);  
-              throw err;  
+              console.log('Error in Saving user: '+err);
+              throw err;
             }
             SystemInfo.numberOfUsers++;
-          // console .log('user registration succesful');    
+          // console .log('user registration succesful');
             return done(null, newUser);
           });
         }
       });
     };
-     
-    // Delay the execution of findOrCreateUser and execute 
+
+    // Delay the execution of findOrCreateUser and execute
     // the method in the next tick of the event loop
     findOrCreateUser();
   })
@@ -206,7 +212,7 @@ var changePass = function(_id,oldPass,newPass,done){
 }
 var findArticleById = function(myid,done){
   var article = {};
-  ArticleHeaders.findOne({'_id':myid},function(err,header){
+  ArticleHeaders.findById(myid,function(err,header){
     if(err){
       console.log("error when find article with id "+myid);
       return done(err,null);
@@ -214,22 +220,31 @@ var findArticleById = function(myid,done){
     if(!header){
       return done(err,null,{message: "Not found ariticle"});
     }
+		header.views++;
+  	header.save();
     article.header = header;
-    ArticleContents.findOne({'_id': article.header.content},function(err,content){
+    ArticleContents.findById(article.header.content,function(err,content){
       if(err){
         console.log("error when find content with id "+id);
         return done(err,null);
       }
       if(content) {
         article.content = content;
-        return done(null,article);
+				Rates.findById(article.header.rate,function(err, rate){
+						if(err){
+				        console.log("error when find rate with id "+id);
+						}
+						if(rate){
+							article.rate = rate;
+						}
+		        return done(null,article);
+				});
       }
       else{
         return done(null,null,{message: "Missing content"});
       }
     });
   });
-  
 };
 var findArticleByUsername = function(username, done){
   var articles;
@@ -256,7 +271,7 @@ var categoryUpload = multipart({
 app.post('/upload-image', multipartMiddleware, function(req, res) {
   if(req.files.file) res.send(req.files.file.path.slice(6));
   delete req.files;
-  // don't forget to delete all req.files when done 
+  // don't forget to delete all req.files when done
 });
 app.get('/get-categories-list',function(req,res){
   Categories.find({}).sort({name: 1}).exec(function(err,categories){
@@ -381,7 +396,7 @@ app.get('/get/category/p*',function(req,res){
         .skip(skip)
         .limit(limit)
       //  .populate('stuff')
-        .exec(function (err, articles) { 
+        .exec(function (err, articles) {
             if(err){
               console.log(err);
               return;
@@ -391,7 +406,7 @@ app.get('/get/category/p*',function(req,res){
         });
 
       })
-    
+
 });
 app.get('/ad/articles/get*',function(req,res){
     var page = req.query.page;
@@ -404,7 +419,7 @@ app.get('/ad/articles/get*',function(req,res){
       .skip(skip)
       .limit(limit)
     //  .populate('stuff')
-      .exec(function (err, articles) { 
+      .exec(function (err, articles) {
           if(err){
             console.log(err);
             return;
@@ -414,7 +429,7 @@ app.get('/ad/articles/get*',function(req,res){
 });
 app.post('/ad/articles/remove*',function(req,res){
 
-    ArticleHeaders.find({_id: req.query.id}).remove().exec(function(err){
+    ArticleHeaders.find({_id: req.query.id}).remove().exec(function(err,header){
       if(err) console.log(err);
       SystemInfo.numberOfArticles--;
       Categories.findOne({name: header.category},function(err,c){
@@ -439,7 +454,7 @@ app.get('/ad/users/get*',function(req,res){
       .skip(skip)
       .limit(limit)
       .populate('stuff')
-      .exec(function (err, users) { 
+      .exec(function (err, users) {
           if(err){
             console.log(err);
             return;
@@ -506,8 +521,8 @@ app.post('/ad/category/upimage/:category', categoryUpload, function(req, res) {
   }
   path = req.files.file.path;
   fs.unlink(link,function(err){
-    if(err) console.log(err); 
-    
+    if(err) console.log(err);
+
   });
  fs.rename(req.files.file.path,link,function(err){
          if(err) console.log(err);
@@ -529,21 +544,36 @@ app.post('/post-article', function(req,res){
       res.send(err);
       return;
     };
-    contentId = contentReturn._id;
+    console.log(contentReturn._id);
     var newHeader = new ArticleHeaders();
     newHeader.title = header.title;
     newHeader.author = header.author;
     newHeader.image = header.image;
     newHeader.category = header.category;
     newHeader.date = new Date();
-    newHeader.content = contentId;
+    newHeader.content = contentReturn._id;
+		newHeader.views = 0;
     newHeader.description = header.description;
-    newHeader.save(function(err,headerReturn){
-      if(err) {
-        res.send(err);
-        return;
-    }
+		var rate = new Rates();
 
+		console.log(rate.rate);
+		rate.sumRate = 0;
+		rate.totalRate = 0;
+		var tempArray = [[],[],[],[],[]];
+		console.log(tempArray);
+		rate.rate = tempArray;
+		rate.save(function(err,r){
+			if(err) console.log(err);
+			else console.log("saved rate",r);
+			newHeader.rate = r._id;
+			newHeader.save(function(err,headerReturn){
+	      if(err) {
+	        res.send(err);
+	        return;
+	    	}
+				res.send(headerReturn._id);
+			});
+		});
     SystemInfo.numberOfArticles++;
     Categories.findOne({name: header.category},function(err,c){
       if(err) return;
@@ -554,20 +584,18 @@ app.post('/post-article', function(req,res){
         c.update({numberArticles: numberArticles}).exec();
       }
     });
-    res.send("Complete");
   });
-  });
-  
+
 });
 app.post('/login', passport.authenticate('login', {
     successRedirect: '/loginsuccess',
     failureRedirect: '/faillogin',
-    failureFlash : true 
+    failureFlash : true
   }));
 app.post('/signup', passport.authenticate('signup', {
     successRedirect: '/signinsuccess',
     failureRedirect: '/failsignup',
-    failureFlash : true 
+    failureFlash : true
   }));
  app.get('/loginsuccess',function(req,res){
     res.send({user: req.user});
@@ -582,6 +610,51 @@ app.get('/faillogin',function(req,res){
 app.get('/failsignup',function(req,res){
   //console.log("fail sign up");
   res.send({message: req.flash('message')});
+});
+app.get('/rating/get:id',function(req,res){
+		Rates.findById(req.params.id,function(err,rate){
+				if(err) res.send("Fail");
+				if(rate) res.send(rate);
+		});
+});
+app.get('/rating/rate*',function(req,res){
+		req.query.rate = parseInt(req.query.rate);
+		Rates.findById(req.query.id,function(err,rating){
+				if(err) res.send("Error");
+				if(rating){
+						//console.log(rating);
+						for(index=0;index<rating.rate.length;index++){
+								_index = rating.rate[index].findIndex(function(id){return req.query.user_id==id;});
+								if(_index>=0){
+										if(index==req.query.rate) {
+											res.send(rating);
+											return;
+										}
+										console.log("user already rated");
+										rating.rate[index].splice(_index,1);
+										rating.sumRate -= index;
+										rating.sumRate += req.query.rate;
+										rating.rate[req.query.rate].push(req.query.user_id);
+										rating.markModified('rate');
+										rating.save(function(err,newRate){
+											console.log(err);
+											res.send(newRate);
+										});
+										return;
+								}
+						};
+						rating.sumRate+=req.query.rate;
+						rating.totalRate+=1;
+						rating.rate[req.query.rate]=rating.rate[req.query.rate].concat([req.query.user_id]);
+						rating.markModified('rate');
+						rating.save(function(err,newRate){
+								console.log(err);
+								res.send(newRate);
+						});
+						return;
+				}
+				else res.send("failed when find rate in DB");
+		});
 });
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
