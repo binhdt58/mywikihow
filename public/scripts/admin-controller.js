@@ -5,7 +5,7 @@ app.run(['$cookies','$window','$rootScope','$http','$location',function($cookies
 	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
 	$rootScope.logout = function(){
 		$rootScope.user = null;
-		$location.url('/admin/login');	
+		$location.url('/admin/login');
 		delete $rootScope.user;
 		delete $window.sessionStorage.token ;
 
@@ -27,7 +27,7 @@ app.controller('LoginCtrl',['$rootScope','$scope','$http','$location','$window',
 		user.password = $scope.password;
 		$http({
 			method: 'POST',
-			url: '/login',
+			url: '/user/login',
 			headers: {
   				'Content-Type': 'application/json'
  			},
@@ -74,7 +74,7 @@ app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$statePar
 			url: '/ad/users/remove?username='+username+"&page="+$stateParams.page
 		}).then(function(response){
 			$scope.totalPage = response.data.totalPage;
-			if($scope.page>$scope.totalPage) $location.url('/admin/articles?page='+$scope.prePage());		
+			if($scope.page>$scope.totalPage) $location.url('/admin/articles?page='+$scope.prePage());
 			console.log($scope.page,$scope.totalPage);
 			$scope.users = response.data.users;
 		})
@@ -148,7 +148,7 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 		}).then(function(response){
 			$scope.articles = response.data.articles;
 			$scope.totalPage = response.data.totalPage;
-			if($scope.page>$scope.totalPage) $location.url('/admin/articles?page='+$scope.prePage());	
+			if($scope.page>$scope.totalPage) $location.url('/admin/articles?page='+$scope.prePage());
 		})
 	}
 	$scope.search = function(name){
@@ -160,14 +160,14 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 			$scope.articles = response.data;
 		},function(){});
 	}
-	
+
 }]);
 app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$window','Upload','$state',function($rootScope,$scope,$http,$location,$window,Upload,$state){
 	if(!$rootScope.user) $location.url('/admin/login');
 	$rootScope.title = "Admin Home";
 	$http({
 		method: 'GET',
-		url: '/get-categories-list'
+		url: '/get/categories'
 	}).then(function(response){
 		$scope.categories = response.data;
 	},function(){});

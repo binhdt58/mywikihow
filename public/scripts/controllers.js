@@ -121,7 +121,7 @@ app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope
 	$rootScope.title = "Home";
 	$http({
 		method: 'GET',
-		url: 'articles-list',
+		url: 'article/list',
 
 	}).then(function(response){
 		var data = angular.fromJson(response.data);
@@ -131,7 +131,7 @@ app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope
 	});
 	$http({
 		method: 'GET',
-		url: '/get-categories-list'
+		url: '/get/categories'
 	}).then(function(response){
 		$scope.categories = response.data.map(function(a) {return a.name;});
 	},function(){});
@@ -139,7 +139,7 @@ app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope
 app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function($http,$scope,$rootScope,$location){
 	$scope.error = null;
 	$scope.signup = function(){
-		
+
 		if($scope.password!=$scope.passwordConfirm) {
 			$scope.error = "Password not match";
 			return;
