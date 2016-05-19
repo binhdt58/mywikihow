@@ -1,0 +1,16 @@
+﻿GET: get/categories      danh sách category
+GET: get/category/p?cate     danh sách header có category là cate
+
+GET: article/list     danh sách các bài viết
+GET: article/get-content	lấy nội dung bài viết
+GET: article/search?key       tìm kiếm với khóa là key
+POST: article/post        post bài mới
+GET: article/rating/get:id      lấy rating tương ứng với id (của rating)
+POST: article/rating/rate?user_id=userid&rate=4&id=rateID    rate bài với user_id (_id của user), rate (0-4), id (id của Rate)
+GET: article/getuserarticles/:username		lấy bài viết của username
+POST: article/upload-image		up ảnh
+
+
+POST: user/login 	login
+POST: user/signup	sign up
+POST: user/changepass	changepass

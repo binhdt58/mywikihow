@@ -1,0 +1,37 @@
+{
+	"_id": "Mongo's _id",
+	"username": "name",
+	"password": "password",
+	"email": "email"
+}
+
+article header
+{
+	"id": "id",
+	"title": "title",
+	"author": "username",
+	"category": 1, //number
+	"image": "image",
+	"content": "_id of content"
+}
+article content
+{
+	"id": "id",
+	"description": "small paragraph to introduce article",
+	"rate": [
+			["user1","user2","user4"],//they rate 1*
+			["user3","user5","....."],//they rate 2*
+			["......."]// ......
+			],
+	"parts": [{
+			"title": "this is title of parts 1",
+			"video": "link i.e youtube/abcxyz",
+			"steps": [ 
+				{	"text":"text show detail infomations of 1st steps",
+					"image": ["image1","image2","image3"]},
+				{	"text":"text show detail infomations of 2nd steps",
+					"image": ["image1","image2""image3"]},
+				]
+		}
+		]
+}
