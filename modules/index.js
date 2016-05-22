@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require("./db");
+var SystemInfo = require("./system");
 Users = db.Users;
 ArticleHeaders = db.ArticleHeaders;
 ArticleContents = db.ArticleContents;
@@ -21,9 +22,9 @@ router.get('/category/p*',function(req,res){
         res.status(404).end();
         return;
       }
-      var skip = pageSize*(page-1);
+      var skip = SystemInfo.pageSize*(page-1);
       var limit = numArticles-skip;
-      if(limit>10)  limit = 10;
+      if(limit>SystemInfo.pageSize)  limit = SystemInfo.pageSize;
       ArticleHeaders.find({category: req.query.category})
         .skip(skip)
         .limit(limit)
@@ -34,7 +35,7 @@ router.get('/category/p*',function(req,res){
               return;
             }
             //console.log(articles);
-            res.send({articles: articles,totalPage: Math.ceil(numArticles/pageSize)});
+            res.send({articles: articles,totalPage: SystemInfo.getTotalArticlePage()});
         });
 
       })

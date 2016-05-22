@@ -87,7 +87,9 @@ router.post('/post', function(req,res){
         //console.log(c);
         numberArticles = c.numberArticles;
         numberArticles++;
-        c.update({numberArticles: numberArticles}).exec();
+        c.update({numberArticles: numberArticles},function(err){
+          if(err) console.log(err);
+        });
       }
     });
   });
@@ -114,8 +116,8 @@ router.get('/rating/rate*',function(req,res){
 										}
 										console.log("user already rated");
 										rating.rate[index].splice(_index,1);
-										rating.sumRate -= index;
-										rating.sumRate += req.query.rate;
+										rating.sumRate -= index+1;
+										rating.sumRate += req.query.rate+1;
 										rating.rate[req.query.rate].push(req.query.user_id);
 										rating.markModified('rate');
 										rating.save(function(err,newRate){
@@ -125,7 +127,7 @@ router.get('/rating/rate*',function(req,res){
 										return;
 								}
 						};
-						rating.sumRate+=req.query.rate;
+						rating.sumRate+=req.query.rate+1;
 						rating.totalRate+=1;
 						rating.rate[req.query.rate]=rating.rate[req.query.rate].concat([req.query.user_id]);
 						rating.markModified('rate');

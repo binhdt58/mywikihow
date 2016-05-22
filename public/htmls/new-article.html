@@ -1,0 +1,94 @@
+
+<div class="container col-md-7 col-md-offset-1">
+	<div class="blog-header col-md-11  well shadow ">
+		<h2 class="blog-title"> Creating new Article</h2>
+	</div>
+	<form class="col-md-11  well shadow" ng-submit = 'postArticle()' >
+		<div class="form-group">
+		  	<label for = "title">Title</label>
+		   	<input type="text" class="form-control" ng-model="data.header.title" placeholder="How to do anything"><br>
+		    <label for = "category">Category</label><br>
+		    	<select ng-model="data.header.category" style="width: 100%; height: 28px "  >
+					<option>WikiHow</option>
+					<option>Arts and Enterainment</option> 
+					<option>Cars and Vehicles</option> 
+					<option>Computers and Electronics</option> 
+					<option>Education and Communications</option> 
+					<option>Family Life</option> 
+					<option>Finance and Business</option> 
+					<option>Health</option> 
+					<option>Hobbies and Traditions</option> 
+					<option>Holidays and Garden</option> 
+					<option>Home and Garden</option>
+					<option>Pets and Animals</option>
+					<option>Philosophy and Religion</option>
+					<option>Relationships</option>
+					<option>Sports and Fitness</option>
+					<option>Travel</option>
+					<option>Work World</option>
+					<option>Youth</option>
+					
+
+				</select><br>
+		    <br>
+			<label for = "description">Introduction</label>
+			<textarea class="form-control" rows="7" ng-model="data.header.description" placeholder="Enter your introduction here"></textarea>
+		</div>
+	</form>
+	<form class="col-md-11  well shadow" >
+		<div class="radio ">
+			This article has:
+			<label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-value="1" ng-model="checked">
+			    Multiple Parts      
+			</label>
+			<label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios2" ng-value="0" ng-model="checked">
+			    Neither
+			</label>
+		</div>
+
+		<div class="form-group" ng-repeat="part in data.content.parts" >
+			<div ng-show="checked">
+				<h2>Part {{$index +1}}</h2>
+				<input type="text" class="form-control" ng-model="part.title" placeholder="Title of part "><br>
+			</div>
+			<div class="form-group" ng-repeat="step in part.steps">
+				<label>Step {{$index +1}}</label>
+				<input type="text" class="form-control" ng-model="step.title" placeholder="Title of step "><br>
+				<textarea class="form-control" ng-model="step.text" rows="9"></textarea><br>
+				
+				<div>
+					Image: <button class="btn btn-info" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+	    						ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+	    							ngf-resize="{width: 100, height: 100}">{{(!file&&"Choose a file")||(file.$ngfName+ " ("+file.$ngfOrigSize+" KB)")}}
+	    							</button>
+							<button class="btn btn-info pull-right" ng-click = "upload(file,step.part_index,$index)">Upload</button>
+				</div>
+			</div>
+			<button ng-click = "addStep($index)" class="pull-right btn btn-success">Add Step</button>
+		</div>
+
+		<div class="form-group" ng-show="checked">
+			<br><br><br>
+			Do you have another part
+			<button ng-click = "addPart()" class="pull-right btn btn-success">Add a part</button>
+		</div>
+
+		<div class="form-group">
+			<br><br><br>
+		    <button ng-click = "postArticle()" class="btn btn-success">Post article with data above</button>
+			
+		</div>
+		
+	</form>
+</div>
+<div class = "col-md-3 bg-info visible-lg-block">
+		<h3>Categories</h3>
+		<div ng-repeat = "category in categories">
+			<img ng-src="images/category/{{category}}.png">
+			<a class = "text-left" ng-href="/category/{{category}}">{{category}}</a>
+		</div>
+	</ul>
+	<br>
+</div>

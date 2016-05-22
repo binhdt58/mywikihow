@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bCrypt = require("bcrypt-nodejs");
+var SystemInfo = require("./system");
 module.exports = function(app){
   var passport = require('passport');
   app.use(passport.initialize());

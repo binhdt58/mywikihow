@@ -1,0 +1,53 @@
+<div>
+	<h3>Users</h3>
+	<div class = "pull-right">
+		<span><b>Search: </b></span>
+		<input type = "text" ng-model = "name" placeholder="Username">
+		<button ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
+	</div>
+	<table class = "table table-striped ">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Username</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "user in users">
+				<th>{{$index+1+10*(page-1)}}</th>
+				<th>{{user.username}}</th>
+				<th>{{user.email}}</th>
+				<th ng-init="edit = false">
+					<p ng-hide = "edit" ng-click = "edit = true">{{user.role}}</p>
+					<div ng-show = "edit" ng-init = "role = user.role">
+						<select  ng-model = "role">
+						  <option value = "admin">admin<span ng-show = "user.role=='admin'" class="glyphicon glyphicon-ok" aria-hidden="true"></span></option>
+						  <option vaue = "user">user<span ng-show = "user.role=='user'" class="glyphicon glyphicon-ok" aria-hidden="true"></span></option>
+						</select>
+
+						<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click = "changeRole(role,$index);edit = false"></span>
+						<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click = "edit = false"></span>
+					</div>
+				</th>
+				<th><button ng-click = "remove(user.username)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
+				<!--th><a ng-click = "goto(category.name)">Detail>></a></th-->
+			</tr>
+		</tbody>
+	</table>	
+	<ul class="pagination">
+    <li>
+      <a ng-href="/admin/users?page={{pre}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li ng-repeat = "page in range(1,totalPage)"><a href="/admin/users?page={{page}}">{{page}}</a></li>
+    <li>
+      <a ng-href="/admin/users?page={{next}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</div>
