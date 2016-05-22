@@ -3,7 +3,7 @@
 	<div class = "pull-right">
 		<span><b>Search: </b></span>
 		<input type = "text" ng-model = "name" placeholder="Username">
-		<button ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
+		<button class= "btn btn-primary btn-sm" ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
 	</div>
 	<table class = "table table-striped ">
 		<thead>
@@ -32,11 +32,11 @@
 						<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click = "edit = false"></span>
 					</div>
 				</th>
-				<th><button ng-click = "remove(user.username)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
+				<th><button class= "btn btn-danger btn-sm" ng-click = "remove(user.username)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
 				<!--th><a ng-click = "goto(category.name)">Detail>></a></th-->
 			</tr>
 		</tbody>
-	</table>	
+	</table>
 	<ul class="pagination">
     <li>
       <a ng-href="/admin/users?page={{pre}}" aria-label="Previous">

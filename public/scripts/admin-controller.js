@@ -155,7 +155,7 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 		if(!name) return;
 		$http({
 			method: "GET",
-			url: "/article-search"+name
+			url: "/article/search"+name
 		}).then(function(response){
 			$scope.articles = response.data;
 		},function(){});
@@ -222,7 +222,7 @@ app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location',function
 	$scope.articles = [];
 	$http({
 		method: 'GET',
-		url: '/getuserarticles/'+$rootScope.user.username,
+		url: 'article/getuserarticles/'+$rootScope.user.username,
 	}).then(function(response){
 		var data = angular.fromJson(response.data);
 		console.log(data);

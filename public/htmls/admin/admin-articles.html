@@ -1,9 +1,9 @@
 <div>
 	<h3>Articles</h3>
 	<div class = "pull-right">
-		<span><b>Search: </b></span>
+		<span><b>Search:  </b></span>
 		<input type = "text" ng-model = "name" placeholder="Username">
-		<button ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
+		<button class= "btn btn-primary btn-sm" ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
 	</div>
 	<table class = "table table-striped ">
 		<thead>
@@ -23,8 +23,8 @@
 				<th>{{article.category}}</th>
 				<th>{{article.date.substring(0,10)}}</th>
 				<th>{{article.views}}</th>
-				<th><button ng-click = "remove(article._id)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
-				<th><a ng-click = "goto(article._id)">Detail>></a></th>
+				<th><button class= "btn btn-danger btn-sm" title = "Click to remove" ng-click = "remove(article._id)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
+				<th><button class= "btn btn-link btn-sm" title = "Click to view" ng-click = "goto(article._id)">Detail <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></button></th>
 			</tr>
 		</tbody>
 	</table>

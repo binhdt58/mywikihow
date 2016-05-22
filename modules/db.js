@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var mongoosastic = require('mongoosastic');
-mongoose.connect('mongodb://127.0.0.1:27017/wikihow?auto_reconnect');
+//mongoose.connect('mongodb://127.0.0.1:27017/wikihow?auto_reconnect');
+mongoose.connect('mongodb://chuyendecongnghe:1111@ds064188.mlab.com:64188/wikihow?auto_reconnect');
 var elasticsearch = require('elasticsearch');
 //model User
 var Schema = mongoose.Schema;
@@ -35,7 +36,11 @@ var Rate = new Schema({
 		rate: {type: Schema.Types.Mixed,default: []}
 },{collection: 'rate'});
 var Rates = mongoose.model('rate', Rate);
-var esClient = new elasticsearch.Client({host: 'http://127.0.0.1:9200'});
+//var esClient = new elasticsearch.Client({host: 'http://127.0.0.1:9200'});
+var esClient = new elasticsearch.Client({
+	host: 'https://zliGiGMUx0GgJIeRYgmkQObtHqHcbU0K:@ngocson95.east-us.azr.facetflow.io',
+  apiVersion: '1.0'
+});
 ArticleHeader.plugin(mongoosastic, {
     esClient: esClient
 });

@@ -17,12 +17,13 @@
 <script type="text/javascript" src="scripts/admin.js"></script>
 </head>
 <body>
-<div class = "row" style = "background-color: darkcyan;">
-	<img  height = 50 width = "100%">
+<div class = "cover">
+    <h2 class = "text-center-vertical"> Wikihow Admin</h2>
 </div>
 <div>
 	<nav class="navbar" ng-controller = 'navbarCtrl'>
-	    <ul>
+  <div class = "">
+	    <ul class = "nav nav-tabs nav-pills nav-stacked ">
 	    	<li><a href="/admin/home">Home</a><li>
 	    	<li><a href="/admin/users?page=1">Users</a><li>
 	    	<li><a href="/admin/articles?page=1">Articles</a><li>
@@ -30,6 +31,7 @@
 	    	<li><a href="/admin/profile">My Profile</a><li>
 	    	<li><a href="" ng-click = "logout()">Log out</a><li>
 	    <ul>
+  </div>
 	</nav>
 	<div class = "uiview" ui-view></div>
 </div>

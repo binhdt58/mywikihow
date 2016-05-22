@@ -193,7 +193,7 @@ router.get('/get-content:id',function(req,res){
 });
 var findArticleByUsername = function(username, done){
   var articles;
-  ArticleHeaders.find({'username': username},function(err,articles){
+  ArticleHeaders.find({'author': username},function(err,articles){
     if(err){
       console.log(" Error when find article by id");
       return done(err,null);

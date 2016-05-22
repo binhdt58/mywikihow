@@ -1,9 +1,13 @@
 <div class = "col-md-10" ng-init = "changePasswordPanel = false">
-	<h2>Profile:</h2>
+	<h3>Profile:</h3>
 	<ul>
 	<li><h4>Username: {{user.username}}</h4></li>
 	<li><h4>Email: {{user.email}}</h4></li>
-	<li><h5 ng-click = "changePasswordPanel=!changePasswordPanel">  Change password <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></h5></li>
+	<li><h4 ng-click = "changePasswordPanel=!changePasswordPanel">
+			<small ng-hide = "changePasswordPanel" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></small>
+			<small ng-show = "changePasswordPanel"  class="glyphicon glyphicon-chevron-down" aria-hidden="true"></small>
+			  Change password
+	</h4></li>
 	<div ng-show = "changePasswordPanel" class = "panel bg-warning"><form class = "panel-body panel-info "ng-submit = "changePass()" >
 		<div ng-show = "error!=null" class="alert alert-danger" role="alert">{{error}}</div>
 		<div ng-show = "success!=null" class="alert alert-success" role="alert">{{success}}</div>
@@ -19,11 +23,11 @@
 	        <label for="password">Confirm new password:</label>
 	        <input type="text" class="form-control" id="password" ng-model = "passwordConfirm" placeholder="Re-enter password">
      	</div>
-     	<button class = "btn btn-info" type = "submit">Change</button>
-     	<button class = "btn btn-info" ng-click = "changePasswordPanel = false">Cancel</button>
+     	<button class = "btn btn-success" type = "submit">Change</button>
+     	<button class = "btn btn-danger" ng-click = "changePasswordPanel = false">Cancel</button>
 	</form></div>
 	</ul>
-	<h2>Your articles: </h2>
+	<h3>Your articles: </h3>
 	<div>
 
 		<i ng-show = "articles.length==0" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>   You dont have any articles yet</i>
@@ -31,7 +35,7 @@
 			<li ng-repeat = "article in articles">
 				<h4>{{article.title}}</h4>
 				<p><span><strong>Category: </strong><i>{{article.category}}.  </i></span>
-				<span><strong> Last update: </strong><i>{{article.date}}</i></span></p>
+				<span><strong> Last update: </strong><i>{{article.date.substring(11,16)+"  "+article.date.substring(0,10).split("-").reverse().join("/")}}</i></span></p>
 				<a class = "text-left" ng-href="/article?id={{article._id}}">Click to view detail -></a>
 			</li>
 		</ul>
