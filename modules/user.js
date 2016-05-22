@@ -30,19 +30,19 @@ module.exports = function(app){
             return done(err);
           // Username does not exist, log error & redirect back
           if (!user){
-            console.log('User Not Found with username '+username);
+            //console.log('User Not Found with username '+username);
             return done(null, false,
                   req.flash('message', 'User Not found.'));
           }
           // User exists but wrong password, log the error
           if (!isValidPassword(user,password)){
-            console.log('Invalid Password');
+            //console.log('Invalid Password');
             return done(null, false,
                 req.flash('message', 'Invalid Password'));
           }
           // User and password both match, return user from
           // done method which will be treated like success
-          console.log("success login");
+          //console.log("success login");
           return done(null, user);
         }
       );
@@ -56,12 +56,12 @@ module.exports = function(app){
         Users.findOne({'username':username},function(err, user) {
           // In case of any error return
           if (err){
-            console.log('Error in SignUp: '+err);
+            //console.log('Error in SignUp: '+err);
             return done(err);
           }
           // already exists
           if (user) {
-            //console.log('User already exists');
+            ////console.log('User already exists');
             return done(null, false,
                req.flash('message','User Already Exists'));
           } else {
@@ -77,8 +77,8 @@ module.exports = function(app){
             // save the user
             newUser.save(function(err) {
               if (err){
-                console.log('Error in Saving user: '+err);
-                throw err;
+                //console.log('Error in Saving user: '+err);
+                //throw err;
               }
               SystemInfo.numberOfUsers++;
             // console .log('user registration succesful');
@@ -96,7 +96,7 @@ module.exports = function(app){
   var changePass = function(_id,oldPass,newPass,done){
       Users.findOne({'_id':_id},function(err,user){
         if(err){
-          console.log(err);
+          //console.log(err);
           return done(err,null);
         }
         if(user){
@@ -105,11 +105,11 @@ module.exports = function(app){
             return done(null,true);
           }
           else{
-            //console.log("pass not match");
+            ////console.log("pass not match");
             return done(null,false,{message: "Wrong password"});
           }
         }else{
-          //console.log("user empty");
+          ////console.log("user empty");
           return done(null,false,{message: "Server cant find your account, please log out then log in"});
         }
       })
@@ -117,7 +117,7 @@ module.exports = function(app){
   router.post('/change-pass/',function(req,res){
     changePass(req.body._id,req.body.oldPass,req.body.newPass,function(err,isChanged,info){
       if(err){
-        console.log(err);
+        //console.log(err);
         res.send("Error");
         return;
       }
@@ -145,11 +145,11 @@ module.exports = function(app){
       res.send({user: req.user});
    })
   router.get('/faillogin',function(req,res){
-    //console.log("fail login");
+    ////console.log("fail login");
     res.send({message: req.flash('message')});
   });
   router.get('/failsignup',function(req,res){
-    //console.log("fail sign up");
+    ////console.log("fail sign up");
     res.send({message: req.flash('message')});
   });
   return router;

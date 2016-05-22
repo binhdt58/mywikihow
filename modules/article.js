@@ -32,7 +32,7 @@ router.get('/list',function(req,res){
 router.get('/search:key',function(req,res){
   ArticleHeaders.search({query_string: {query: req.params.key }}, {hydrate:true},function(err,results){
     if(err){
-      console.log(err);
+      ;//console.log(err);
       return;
     }
     res.send(results.hits.hits);
@@ -50,7 +50,7 @@ router.post('/post', function(req,res){
       res.send(err);
       return;
     };
-    console.log(contentReturn._id);
+    ;//console.log(contentReturn._id);
     var newHeader = new ArticleHeaders();
     newHeader.title = header.title;
     newHeader.author = header.author;
@@ -62,15 +62,15 @@ router.post('/post', function(req,res){
     newHeader.description = header.description;
 		var rate = new Rates();
 
-		console.log(rate.rate);
+		;//console.log(rate.rate);
 		rate.sumRate = 0;
 		rate.totalRate = 0;
 		var tempArray = [[],[],[],[],[]];
-		console.log(tempArray);
+		;//console.log(tempArray);
 		rate.rate = tempArray;
 		rate.save(function(err,r){
-			if(err) console.log(err);
-			else console.log("saved rate",r);
+			if(err) ;//console.log(err);
+			else ;//console.log("saved rate",r);
 			newHeader.rate = r._id;
 			newHeader.save(function(err,headerReturn){
 	      if(err) {
@@ -84,11 +84,11 @@ router.post('/post', function(req,res){
     Categories.findOne({name: header.category},function(err,c){
       if(err) return;
       if(c){
-        //console.log(c);
+        //;//console.log(c);
         numberArticles = c.numberArticles;
         numberArticles++;
         c.update({numberArticles: numberArticles},function(err){
-          if(err) console.log(err);
+          if(err) ;//console.log(err);
         });
       }
     });
@@ -106,7 +106,7 @@ router.get('/rating/rate*',function(req,res){
 		Rates.findById(req.query.id,function(err,rating){
 				if(err) res.send("Error");
 				if(rating){
-						//console.log(rating);
+						//;//console.log(rating);
 						for(index=0;index<rating.rate.length;index++){
 								_index = rating.rate[index].findIndex(function(id){return req.query.user_id==id;});
 								if(_index>=0){
@@ -114,14 +114,14 @@ router.get('/rating/rate*',function(req,res){
 											res.send(rating);
 											return;
 										}
-										console.log("user already rated");
+										;//console.log("user already rated");
 										rating.rate[index].splice(_index,1);
 										rating.sumRate -= index+1;
 										rating.sumRate += req.query.rate+1;
 										rating.rate[req.query.rate].push(req.query.user_id);
 										rating.markModified('rate');
 										rating.save(function(err,newRate){
-											console.log(err);
+											;//console.log(err);
 											res.send(newRate);
 										});
 										return;
@@ -132,7 +132,7 @@ router.get('/rating/rate*',function(req,res){
 						rating.rate[req.query.rate]=rating.rate[req.query.rate].concat([req.query.user_id]);
 						rating.markModified('rate');
 						rating.save(function(err,newRate){
-								console.log(err);
+								;//console.log(err);
 								res.send(newRate);
 						});
 						return;
@@ -144,7 +144,7 @@ var findArticleById = function(myid,done){
   var article = {};
   ArticleHeaders.findById(myid,function(err,header){
     if(err){
-      console.log("error when find article with id "+myid);
+      ;//console.log("error when find article with id "+myid);
       return done(err,null);
     }
     if(!header){
@@ -155,14 +155,14 @@ var findArticleById = function(myid,done){
     article.header = header;
     ArticleContents.findById(article.header.content,function(err,content){
       if(err){
-        console.log("error when find content with id "+id);
+        ;//console.log("error when find content with id "+id);
         return done(err,null);
       }
       if(content) {
         article.content = content;
 				Rates.findById(article.header.rate,function(err, rate){
 						if(err){
-				        console.log("error when find rate with id "+id);
+				        ;//console.log("error when find rate with id "+id);
 						}
 						if(rate){
 							article.rate = rate;
@@ -179,12 +179,12 @@ var findArticleById = function(myid,done){
 router.get('/get-content:id',function(req,res){
     findArticleById(req.params.id,function(err,article,info){
       if(err){
-        console.log(err);
+        ;//console.log(err);
         res.send("Error");
         return;
       }
       if(!article){
-       // console.log("not found");
+       // ;//console.log("not found");
         res.send({message:info});
       }else {
         res.send(article);
@@ -195,7 +195,7 @@ var findArticleByUsername = function(username, done){
   var articles;
   ArticleHeaders.find({'author': username},function(err,articles){
     if(err){
-      console.log(" Error when find article by id");
+      ;//console.log(" Error when find article by id");
       return done(err,null);
     }
     if(articles) {
@@ -209,12 +209,12 @@ var findArticleByUsername = function(username, done){
 router.get('/getuserarticles/:username',function(req,res){
   findArticleByUsername(req.params.username,function(err,article,info){
     if(err){
-        console.log(err);
+        ;//console.log(err);
         res.send("Error");
         return;
       }
       if(!article){
-       // console.log("not found");
+       // ;//console.log("not found");
         res.send({message:info});
       }else {
         res.send({articles: article});
