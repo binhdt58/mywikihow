@@ -8,27 +8,9 @@
 		  	<label for = "title">Title</label>
 		   	<input type="text" class="form-control" ng-model="data.header.title" placeholder="How to do anything"><br>
 		    <label for = "category">Category</label><br>
-		    	<select ng-model="data.header.category" style="width: 100%; height: 28px "  >
-					<option>WikiHow</option>
-					<option>Arts and Enterainment</option> 
-					<option>Cars and Vehicles</option> 
-					<option>Computers and Electronics</option> 
-					<option>Education and Communications</option> 
-					<option>Family Life</option> 
-					<option>Finance and Business</option> 
-					<option>Health</option> 
-					<option>Hobbies and Traditions</option> 
-					<option>Holidays and Garden</option> 
-					<option>Home and Garden</option>
-					<option>Pets and Animals</option>
-					<option>Philosophy and Religion</option>
-					<option>Relationships</option>
-					<option>Sports and Fitness</option>
-					<option>Travel</option>
-					<option>Work World</option>
-					<option>Youth</option>
+		    	<select ng-model="data.header.category" style="width: 100%; height: 28px " >
+					<option ng-repeat = "category in categories" >{{category}}</option>
 					
-
 				</select><br>
 		    <br>
 			<label for = "description">Introduction</label>
@@ -63,6 +45,9 @@
 	    						ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
 	    							ngf-resize="{width: 100, height: 100}">{{(!file&&"Choose a file")||(file.$ngfName+ " ("+file.$ngfOrigSize+" KB)")}}
 	    							</button>
+							<div class="pull-right">
+								<img ngf-src = "file">
+							</div>
 							<button class="btn btn-info pull-right" ng-click = "upload(file,step.part_index,$index)">Upload</button>
 				</div>
 			</div>
@@ -87,8 +72,7 @@
 		<h3>Categories</h3>
 		<div ng-repeat = "category in categories">
 			<img ng-src="images/category/{{category}}.png">
-			<a class = "text-left" ng-href="/category/{{category}}">{{category}}</a>
+			<a class = "text-left" ng-href="/category/p?category={{category}}&page=1">  {{category}}</a>
 		</div>
-	</ul>
-	<br>
+		<br>
 </div>

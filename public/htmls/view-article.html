@@ -2,8 +2,9 @@
 <div class="container col-md-7 col-md-offset-1">
 	<div class="blog-header col-md-11 well shadow">
 		<h1 class="blog-title text-uppercase"> {{data.header.title}} </h1>
-		<b> by <a href="#">{{data.header.author}} </a> </b>
-		<p></p> 
+		<b>Category :<a href="#"> {{data.header.category}}</a></b><br>
+		<b> By <a href="#">{{data.header.author}} </a> </b>
+		<br>
 		<p class="blog-description text-article "> {{data.header.description}} </p>
 		
 	</div>
@@ -23,7 +24,7 @@
 			</div>
 		</div>
 </div>
-<div class = "col-md-3 bg-info visible-lg-block">
+<div class = "col-md-3 bg-info visible-lg-block shadow">
 		<h3 align="center">How helpful is this ?</h3>
 		<div class="col-md-2"></div>
 		<div style="text-align:center" class="col-md-10" >
@@ -36,14 +37,14 @@
   		<h4 align="center">Rate: {{data.rate.sumRate/data.rate.totalRate | number:2}} / 5.00</h4>
   		<hr class="featurette-divider">
   		<div class="row">
-	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3> {{data.header.date | date: "dd-MM-yyyy HH:mm:ss"}}<hr class="featurette-divider"></div>
-	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span></h3><b>{{data.header.views}}</b> views<br><hr class="featurette-divider"></div>
+	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3>Date: {{data.header.date | date: "dd-MM-yyyy"}} <br>Time:  {{data.header.date | date: "HH:mm:ss"}}<hr class="featurette-divider"></div>
+	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span></h3><b>{{data.header.views}}</b> views<br><br><hr class="featurette-divider"></div>
   		</div>
 			<h3>Categories</h3>
-			<div ng-repeat = "category in categories" >
+			<div ng-repeat = "category in categories">
 				<img ng-src="images/category/{{category}}.png">
 				<a class = "text-left" ng-href="/category/p?category={{category}}&page=1">  {{category}}</a>
 			</div>
-		</div>
-	<br>
+			<br>
+		
 </div>

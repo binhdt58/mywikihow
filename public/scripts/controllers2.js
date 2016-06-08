@@ -6,6 +6,7 @@ var app = angular.module('appController');
 //}]);
 
 app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',function($scope,$rootScope,$http,Upload){
+	$scope.checked = 0;
 	$rootScope.title = "New articles";
 	$scope.data = {
 		header: {
@@ -32,8 +33,16 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 		if (! $rootScope.user ) {
 			confirm(" You must login before you want to post article ");
 		};
-		if (! $scope.data.header.title || ! $scope.data.header.category || ! $scope.data.header.description ) {
-			confirm(" You must fill in the title, category, introduc before you want to post article ");
+		if (! $scope.data.header.title ) {
+			confirm(" You must fill in the title before you want to post article ");
+			return;
+		};
+		if (! $scope.data.header.category ) {
+			confirm(" You must fill in the category before you want to post article ");
+			return;
+		};
+		if (! $scope.data.header.description ) {
+			confirm(" You must fill in the introduction before you want to post article ");
 			return;
 		};
 		$scope.data.header.author = $rootScope.user.username;
