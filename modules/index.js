@@ -35,7 +35,7 @@ router.get('/category/p*',function(req,res){
               return;
             }
             //console.log(articles);
-            res.send({articles: articles,totalPage: SystemInfo.getTotalArticlePage()});
+            res.send({articles: articles,totalPage: Math.ceil(numArticles/SystemInfo.pageSize)});
         });
 
       })

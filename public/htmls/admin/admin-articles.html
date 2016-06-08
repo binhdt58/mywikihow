@@ -1,10 +1,10 @@
 <div>
 	<h3>Articles</h3>
-	<div class = "pull-right">
+	<form class = "pull-right" ng-submit = "search(name)">
 		<span><b>Search:  </b></span>
 		<input type = "text" ng-model = "name" placeholder="Username">
-		<button class= "btn btn-primary btn-sm" ng-click = "search(name)"><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
-	</div>
+		<button type = "submit" class= "btn btn-primary btn-sm" ><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
+	</form>
 	<table class = "table table-striped ">
 		<thead>
 			<tr>

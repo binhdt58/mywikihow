@@ -68,7 +68,7 @@ app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$statePar
 		$scope.pre = prePage();
 		$scope.next = nextPage();
 	},function(){});
-	$scope.remove = function(id){
+	$scope.remove = function(username){
 		$http({
 			method: 'POST',
 			url: '/ad/users/remove?username='+username+"&page="+$stateParams.page
@@ -111,6 +111,7 @@ app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$statePar
 app.controller('UserProfileCtrl',['$rootScope','$scope','$http','$location',function($rootScope,$scope,$http,$location){
 	if(!$rootScope.user) $location.url('/admin/login');
 	$rootScope.title = "Profile";
+
 }]);
 
 app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$stateParams','$window',function($rootScope,$scope,$http,$location,$stateParams,$window){
@@ -214,7 +215,7 @@ app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$win
 
     };
 }]);
-app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location',function($rootScope,$scope,$http,$location){
+app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location','$window',function($rootScope,$scope,$http,$location,$window){
 	if(!$rootScope.user) $location.url('/admin/login');
 	$rootScope.title = $rootScope.user.username + " Profile";
 	$scope.error = null;
@@ -273,6 +274,10 @@ app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location',function
 			}
 			},function(){
 		});
+	}
+	$scope.goto = function(id){
+		//console.log("open article"+ id);
+		$window.open("/article/"+id);
 	}
 }]);
 app.controller('navbarCtrl',['$rootScope','$scope','$http',function($rootScope,$scope,$http){

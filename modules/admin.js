@@ -32,27 +32,26 @@ router.get('/articles/get*',function(req,res){
       });
 });
 router.post('/articles/remove*',function(req,res){
-
-    ArticleHeaders.find({_id: req.query.id}).remove().exec(function(err,header){
+    ArticleHeaders.findOne({_id: req.query.id},function(err,header){
       if(err) console.log(err);
+      ArticleContents.findByIdAndRemove(header.content,function(err){});
+      Rates.findByIdAndRemove(header.rate,function(err){});
+      ArticleHeaders.findByIdAndRemove(header._id,function(err){});
       SystemInfo.numberOfArticles--;
       Categories.findOne({name: header.category},function(err,c){
           if(err) return;
           if(c){
-            console.log(c);
-            numberArticles = c.numberArticles;
-            numberArticles--;
-            c.update({numberArticles: numberArticles}).exec();
+            c.numberArticles--;
+            c.save(function(err){});
           }
       });
     });
-
     res.redirect('/ad/articles/get?page='+req.query.page);
 });
 router.get('/users/get*',function(req,res){
     var page = req.query.page;
     var skip = SystemInfo.pageSize*(page-1);
-    var limit = SystemInfo.numberOfArticles-skip;
+    var limit = SystemInfo.numberOfUsers-skip;
     if(limit>10)  limit = 10;
     Users.find()
       .skip(skip)

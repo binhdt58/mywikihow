@@ -1,9 +1,9 @@
 <div>
 	<h3>Categories</h3>
-	<div class = "pull-right">
+	<form class = "pull-right" ng-submit = "createNew(name)">
 		<span><b>New category: </b></span>
-		<input type = "text" ng-model = "name">
-		<button class= "btn btn-primary btn-sm" ng-click = "createNew(name)"><span class="glyphicon glyphicon-plus" aria-hidden = "true"></span></button>
+		<input type = "text" ng-model = "name" placeholder="category name">
+		<button type = "submit" class= "btn btn-primary btn-sm" ><span class="glyphicon glyphicon-plus" aria-hidden = "true"></span></button>
 	</div>
 	<table class = "table table-striped ">
 		<thead>
@@ -18,7 +18,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat = "category in categories" >
-				<th>{{$index}}</th>
+				<th>{{$index+1}}</th>
 				<th>
 					<p ng-hide = "edit" ng-click = "edit = true">{{category.name}}</p>
 					<div ng-show = "edit">
