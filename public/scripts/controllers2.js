@@ -136,7 +136,7 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 			method: "GET",
 			url: "article/rating/rate?user_id=" +$rootScope.user._id+"&rate="+$scope.color.name+"&id="+$scope.data.rate._id,
 		}).then(function(response){
-			console.log(Error);
+			$scope.data.rate = response.data;
 		},function(){});
 	};
 }]);
