@@ -27,7 +27,8 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 
 
 	};
-	//var data = {header: {},content: {}};
+	$scope.upimage = [];
+	$scope.upimage.push([{part_index:0 ,image: {} }]);
 
 	$scope.postArticle = function(){
 		if (! $rootScope.user ) {
@@ -45,41 +46,51 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 			confirm(" You must fill in the introduction before you want to post article ");
 			return;
 		};
-		$scope.data.header.author = $rootScope.user.username;
-
-		/*data.header.title = $scope.article_title;
-		data.header.category = $scope.category;
-		data.header.description = $scope.article_intro;*/
-		$scope.data.header.image = $scope.data.content.parts[0].steps[0].image;
-		if( ! $scope.data.header.image){
-			$scope.data.header.image = "/images/user/default.jpg";
-		};
-		$http({
-			method: "POST",
-			url: "article/post",
-			data: $scope.data
-		}).then(function(response){
-
-		},function(){});
+		$scope.upload(0,0,postData);
 	};
+	var postData = function(){
+				$scope.data.header.author = $rootScope.user.username;
+
+				data.header.title = $scope.article_title;
+				data.header.category = $scope.category;
+				data.header.description = $scope.article_intro;
+				$scope.data.header.image = $scope.data.content.parts[0].steps[0].image;
+				if( ! $scope.data.header.image){
+					$scope.data.header.image = "/images/user/default.jpg";
+				};
+				$http({
+					method: "POST",
+					url: "article/post",
+					data: $scope.data
+				}).then(function(response){
+						console.log(response.data);
+				},function(){});
+	}
 	$scope.addStep = function (index){
 		$scope.data.content.parts[index].steps.push({part_index:index ,text: "",image: ""});
+		$scope.upimage[index].push({part_index:index ,image: ""});
 	};
 	$scope.addPart = function (){
 		$scope.data.content.parts.push({title: "",
 				steps: [{part_index: $scope.data.content.parts.length ,text: "",image: ""}]
 			});
+		console.log($scope.upimage);
+		$scope.upimage.push([{part_index: $scope.upimage.length ,image: ""}]);
 		console.log($scope.data.content.parts);
 
 	};
 	$scope.imageUrl = null;
-	$scope.upload = function (file,index1,index2) {
+	$scope.upload = function (partIndex,stepIndex,callBack) {
         Upload.upload({
             url: 'article/upload-image',
-            data: {file: file}
+            data: {file: $scope.upimage[partIndex][stepIndex].image}
         }).then(function (res) {
-            $scope.data.content.parts[index1].steps[index2].image = res.data;
-            console.log("link:" +$scope.data.content.parts[index1].steps[index2].image );
+            $scope.data.content.parts[partIndex].steps[stepIndex].image = res.data;
+						if(stepIndex<$scope.upimage[partIndex].length-1) $scope.upload(partIndex,stepIndex+1,callBack);
+						else if(partIndex<$scope.upimage.length-1)  $scope.upload(partIndex+1,0,callBack);
+						else callBack();
+						console.log($scope.upimage[partIndex].length-2,$scope.upimage.length-2 );
+            console.log("image Link: part"+partIndex+" step"+stepIndex+ "    " +$scope.data.content.parts[partIndex].steps[stepIndex].image);
         }, function (res) {
             console.log('Error status: ' + res.status);
         }, function (evt) {

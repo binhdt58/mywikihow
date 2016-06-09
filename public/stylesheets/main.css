@@ -46,6 +46,11 @@
     color: #eee;
     box-shadow: 5px 5px 5px #888888;
 }
+.brand {
+    background-color: #5cb85c;
+    color: #eee;
+    box-shadow: 5px 5px 5px #888888;
+}
 .well {
     background-color: #eeeeee;
 }
@@ -76,7 +81,15 @@
 
 }
 
+
+
+
+#mainwrapper {
+
+}
+
 #mainwrapper .box {
+
     cursor: pointer;
     height: 171px;
     float: left;
@@ -284,6 +297,12 @@
 border:         2px solid gold;
 }
 
+.imagen {
+
+    width: 100%;
+    height: 400px;
+}
+
 .item{
   background-color: white;
   border: 2px solid #eeeeee;
@@ -295,7 +314,7 @@ body{
 }
 .form-panel{
   background-color: white;
-  padding: 0px 20px 20px 20px;
+  padding: 10px 20px 20px 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;
 }
