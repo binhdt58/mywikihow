@@ -1,17 +1,17 @@
 <div class = "col-md-10" ng-init = "changePasswordPanel = false">
-	<h3>Profile:</h3>
-	<ul>
-	<li><h4>Username: {{user.username}}</h4></li>
-	<li><h4>Email: {{user.email}}</h4></li>
-	<li><h4 ng-click = "changePasswordPanel=!changePasswordPanel">
-			<small ng-hide = "changePasswordPanel" class="glyphicon glyphicon-chevron-right" aria-hidden="true"></small>
-			<small ng-show = "changePasswordPanel"  class="glyphicon glyphicon-chevron-down" aria-hidden="true"></small>
-			  Change password
-	</h4></li>
+	<h2>Profile:</h2>
+	<h4>Username: {{user.username}}</h4>
+	<h4>Email: {{user.email}}</h4>
+	<h4 ng-click = "changePasswordPanel=!changePasswordPanel">
+			Change password
+			<small ng-hide = "changePasswordPanel" class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></small>
+			<small ng-show = "changePasswordPanel"  class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></small>
+
+	</h4>
 	<div ng-show = "changePasswordPanel" class = "change-pass-form">
 			<form class = "panel-body panel-info "ng-submit = "changePass()" >
-				<div ng-show = "error!=null" class="alert alert-danger" role="alert">{{error}}</div>
-				<div ng-show = "success!=null" class="alert alert-success" role="alert">{{success}}</div>
+				<p ng-show = "error!=null" class="error-text">{{error}}</p>
+				<p ng-show = "success!=null" class = "success-text">{{success}}</p>
 				<div class="form-group">
 			        <label for="password">Old password:</label>
 			        <input type="password" class="form-control" id="password" ng-model = "oldPass" placeholder="Password">
@@ -28,16 +28,18 @@
 		     	<button class = "btn btn-danger" ng-click = "changePasswordPanel = false">Cancel</button>
 		</form></div>
 	</ul>
-	<h3>Your articles: </h3>
+</div>
+<br>
+<br>
+<div class = "form-panel col-md-10">
+	<h2>You have {{articles.length}} articles: </h2>
 	<div>
 		<i ng-show = "articles.length==0" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>   You dont have any articles yet</i>
-		<ul>
-			<li ng-repeat = "article in articles">
+			<div ng-repeat = "article in articles" class="your-article-list">
 				<h4>{{article.title}}</h4>
-				<p><span><strong>Category: </strong><i>{{article.category}}.  </i></span>
-				<span><strong> Last update: </strong><i>{{article.date.substring(11,16)+"  "+article.date.substring(0,10).split("-").reverse().join("/")}}</i></span></p>
-				<button class = "text-left btn-link" ng-click = "goto(article._id)">Click to view detail <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></button>
-			</li>
-		</ul>
+				<p><span><strong>Category: </strong>{{article.category}}</span></p>
+				<p><span><strong>Views: </strong>{{article.views}}</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span><strong> Update: </strong>{{convertTime(article.date)}}</span></p>
+				<a class = "text-left" ng-click = "goto('/article/'+article._id)">Click to view detail -></a>
+			</div>
 	</div>
 </div>

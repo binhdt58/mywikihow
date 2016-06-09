@@ -110,6 +110,7 @@ router.post('/category/new/:category',function(req,res){
     });
 })
 router.post('/category/rename*',function(req,res){
+    ArticleHeaders.update({category: req.query.oldName},{category: req.query.newName},{multi: true}, function(err){});
     Categories.findOneAndUpdate({name: req.query.oldName},{name: req.query.newName},function(err){
       fs.rename('public/images/category/'+req.query.oldName+".png",'public/images/category/'+req.query.newName+".png",function(err){
          if(err) console.log(err);

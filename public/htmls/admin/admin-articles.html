@@ -2,7 +2,7 @@
 	<h3>Articles</h3>
 	<form class = "pull-right" ng-submit = "search(name)">
 		<span><b>Search:  </b></span>
-		<input type = "text" ng-model = "name" placeholder="Username">
+		<input type = "text" ng-model = "name" placeholder="Title or Content">
 		<button type = "submit" class= "btn btn-primary btn-sm" ><span class="glyphicon glyphicon-search" aria-hidden = "true"></span></button>
 	</form>
 	<table class = "table table-striped ">
@@ -13,18 +13,18 @@
 				<th>Category</th>
 				<th>Date</th>
 				<th>Views</th>
-				<th></th>
+				<th></th><th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat = "article in articles">
 				<th>{{$index+1+10*(page-1)}}</th>
-				<th>{{article.title}}</th>
+				<th>{{article.title.substring(0,30)}}</th>
 				<th>{{article.category}}</th>
 				<th>{{article.date.substring(0,10)}}</th>
 				<th>{{article.views}}</th>
 				<th><button class= "btn btn-danger btn-sm" title = "Click to remove" ng-click = "remove(article._id)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
-				<th><button class= "btn btn-link btn-sm" title = "Click to view" ng-click = "goto(article._id)">Detail <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></button></th>
+				<th><button class= "btn btn-link btn-sm" title = "Click to view" ng-click = "goto('/article/'+article._id)">Detail <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span></button></th>
 			</tr>
 		</tbody>
 	</table>

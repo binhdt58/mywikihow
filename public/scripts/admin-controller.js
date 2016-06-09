@@ -10,6 +10,9 @@ app.run(['$cookies','$window','$rootScope','$http','$location',function($cookies
 		delete $window.sessionStorage.token ;
 
 	}
+	$rootScope.goto = function(link){
+		$window.open(link);
+	}
 	$rootScope.range = function(begin,end){
 		var a = [];
 		for(var i = begin;i<=end;i++){
@@ -50,12 +53,12 @@ app.controller('LoginCtrl',['$rootScope','$scope','$http','$location','$window',
 }]);
 
 app.controller('HomeCtrl',['$rootScope','$scope','$http','$location',function($rootScope,$scope,$http,$location){
-	if(!$rootScope.user) $location.url('/home');
+	if(!$rootScope.user||$rootScope.user.role!="admin") $location.url('/admin/login');
 	$rootScope.title = "Admin Home";
 }]);
 
 app.controller('UsersCtrl',['$rootScope','$scope','$http','$location','$stateParams',function($rootScope,$scope,$http,$location,$stateParams){
-	if(!$rootScope.user) $location.url('/admin/login');
+	if(!$rootScope.user||$rootScope.user.role!="admin") $location.url('/admin/login');
 	$scope.totalPage = 0;
 	$scope.page = $stateParams.page;
 	$rootScope.title = "User page = " +$stateParams.page;
@@ -115,7 +118,7 @@ app.controller('UserProfileCtrl',['$rootScope','$scope','$http','$location',func
 }]);
 
 app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$stateParams','$window',function($rootScope,$scope,$http,$location,$stateParams,$window){
-	if(!$rootScope.user) $location.url('/admin/login');
+	if(!$rootScope.user||$rootScope.user.role!="admin") $location.url('/admin/login');
 	$scope.totalPage = 0;
 	$rootScope.title = "Articles page = " +$stateParams.page;
 	$http({
@@ -129,9 +132,6 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 
 	},function(){});
 	$scope.page = $stateParams.page;
-	$scope.goto = function(id){
-		$window.open("/article/"+id);
-	}
 	var prePage = function(){
 		if($stateParams.page>1){
 			return $stateParams.page-1;
@@ -164,7 +164,7 @@ app.controller('ArticlesCtrl',['$rootScope','$scope','$http','$location','$state
 
 }]);
 app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$window','Upload','$state',function($rootScope,$scope,$http,$location,$window,Upload,$state){
-	if(!$rootScope.user) $location.url('/admin/login');
+	if(!$rootScope.user||$rootScope.user.role!="admin") $location.url('/admin/login');
 	$rootScope.title = "Admin Home";
 	$http({
 		method: 'GET',
@@ -195,6 +195,7 @@ app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$win
 	};
 	$scope.createNew = function(name){
 		if(!name) return;
+		if($scope.categories.find(function(d){return d.name==name})!=undefined) return;
 		$http({
 			method: 'POST',
 			url: '/ad/category/new/'+name
@@ -216,7 +217,7 @@ app.controller('CategoriesCtrl',['$rootScope','$scope','$http','$location','$win
     };
 }]);
 app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location','$window',function($rootScope,$scope,$http,$location,$window){
-	if(!$rootScope.user) $location.url('/admin/login');
+	if(!$rootScope.user||$rootScope.user.role!="admin") $location.url('/admin/login');
 	$rootScope.title = $rootScope.user.username + " Profile";
 	$scope.error = null;
 	$scope.success = null;
@@ -255,7 +256,7 @@ app.controller('ProfileCtrl',['$rootScope','$scope','$http','$location','$window
 		xdata.newPass =  $scope.password;
 		$http({
 			method: 'POST',
-			url: '/change-pass/',
+			url: 'user/change-pass/',
 			data: xdata
 		}).then(function(response){
 			var data = angular.fromJson(response.data);

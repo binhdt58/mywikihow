@@ -1,14 +1,23 @@
 var app = angular.module("appController",['ngCookies','ui.router','ngFileUpload']);
-app.run(['$cookies','$window','$rootScope','$http',function($cookies,$window,$rootScope,$http){
+app.run(['$cookies','$window','$rootScope','$http','$location',function($cookies,$window,$rootScope,$http,$location){
 	$rootScope.user = null;
 	if($window.sessionStorage.token) $rootScope.user = $window.sessionStorage.user;
 	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
+	$http({
+		method: 'GET',
+		url: '/get/categories'
+	}).then(function(response){
+		$rootScope.categories = response.data.map(function(a) {return a.name;});
+	},function(){});
 	$rootScope.range = function(begin,end){
 		var a = [];
 		for(var i = begin;i<=end;i++){
 			a.push(i);
 		}
 		return a;
+	}
+	$rootScope.convertTime = function(time){
+		 return time.substring(11,16)+"  "+time.substring(0,10).split("-").reverse().join("/")
 	}
 }]);
 
@@ -43,10 +52,8 @@ app.controller("navbarCtrl",['$scope','$location','$http','$rootScope','$cookies
 					console.log(data.message);
 					$scope.error = data.message[0];
 				}
-			},function(error){
-
-		});
-	}
+			},function(error){});
+		}
 
 }]);
 app.controller("ProfileCtrl",['$scope','$rootScope','$cookieStore','$window','$location','$http',function($scope,$rootScope,$cookieStore,$window,$location,$http){
@@ -129,15 +136,11 @@ app.controller("HomepageCtrl",['$rootScope','$scope','$http',function($rootScope
 	},function(){
 
 	});
-	$http({
-		method: 'GET',
-		url: '/get/categories'
-	}).then(function(response){
-		$scope.categories = response.data.map(function(a) {return a.name;});
-	},function(){});
+
 }]);
-app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function($http,$scope,$rootScope,$location){
+app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location','$cookies',"$window",function($http,$scope,$rootScope,$location,$cookies,$window){
 	$scope.error = null;
+	$scope.login_error = null;
 	$scope.signup = function(){
 
 		if($scope.password!=$scope.passwordConfirm) {
@@ -166,9 +169,38 @@ app.controller('SignUpCtrl',['$http','$scope','$rootScope','$location',function(
 					console.log(data.message);
 					$scope.error = data.message[0];
 				}
-			},function(error){
-		});
+			},function(error){});
 	}
+	$scope.login = function(){
+		var user = {};
+		user.username = $scope.login_username;
+		user.password = $scope.login_password;
+		$http({
+			method: 'POST',
+			url: 'user/login',
+			headers: {
+					'Content-Type': 'application/json'
+			},
+			data: user
+			}).then(function(response){
+				var data = angular.fromJson(response.data);
+				if(data.user){
+					$rootScope.user = data.user;
+					$cookies.putObject('user',$rootScope.user);
+					console.log("hello");
+					$location.url('/home');
+					if($scope.remenberMe){
+						$cookies.putObject('user',$rootScope.user);
+					}else{
+						$window.sessionStorage.username = $rootScope.user.username;
+					}
+
+				}else{
+					//console.log(data.message);
+					$scope.login_error = data.message[0];
+				}
+			},function(error){});
+		}
 }]);
 app.controller("SearchCtrl",['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
 	$rootScope.title = "Search";
@@ -181,7 +213,7 @@ app.controller("SearchCtrl",['$rootScope','$scope','$http','$stateParams',functi
 	},function(){});
 }]);
 app.controller('CategoryCtrl',['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
-	$rootScope.title = "Search result";
+	$rootScope.title = $stateParams.category;
 	$scope.category = $stateParams.category;
 	$scope.totalPage = $stateParams.page;
 	$scope.pre = $stateParams.page;

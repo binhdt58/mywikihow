@@ -25,7 +25,7 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 			]
 		}
 
-		
+
 	};
 	//var data = {header: {},content: {}};
 
@@ -68,7 +68,7 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 	$scope.addPart = function (){
 		$scope.data.content.parts.push({title: "",
 				steps: [{part_index: $scope.data.content.parts.length ,text: "",image: ""}]
-			}); 
+			});
 		console.log($scope.data.content.parts);
 
 	};
@@ -106,9 +106,9 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 			$scope.data = response.data;
 			$rootScope.title = $scope.data.header.title;
 	},function(){
-		
+
 	});
-	
+
 	$http({
 		method: 'GET',
 		url: '/get/categories'
@@ -119,7 +119,7 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 		if (! $rootScope.user ) {
 			confirm(" You must login before you want to rate article ");
 		};
-		
+
 		$http({
 			method: "GET",
 			url: "article/rating/rate?user_id=" +$rootScope.user._id+"&rate="+$scope.color.name+"&id="+$scope.data.rate._id,

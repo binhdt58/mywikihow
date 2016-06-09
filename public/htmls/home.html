@@ -10,45 +10,45 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-    	
+
       <div class="item active" >
-      		
+
 	        <img src="{{articles[articles.length -1].image}}"  width="460" height="345">
 	        <div class="carousel-caption">
 		        <h2>{{articles[articles.length -1].title}}</h2>
 		        <p>{{articles[articles.length -1].description | limitTo: 100}}</p>
 		    </div>
-			
+
       </div>
 
       <div class="item">
-      
+
 	        <img src="{{articles[articles.length -2].image}}"  width="460" height="345">
 	        <div class="carousel-caption">
 		        <h2>{{articles[articles.length -2].title}}</h2>
 		        <p>{{articles[articles.length -2].description | limitTo: 100}}</p>
 		    </div>
-		
+
       </div>
-    
+
       <div class="item">
-	   
+
 	        <img src="{{articles[articles.length -3].image}}"  width="460" height="345">
 	        <div class="carousel-caption">
 		        <h2>{{articles[articles.length -3].title}}</h2>
 		        <p>{{articles[articles.length -3].description | limitTo: 100}}</p>
 		    </div>
-		
+
       </div>
 
       <div class="item">
-      	
+
 	        <img src="{{articles[articles.length -4].image}}"  width="460" height="345">
 	        <div class="carousel-caption">
 		        <h2>{{articles[articles.length -4].title}}</h2>
 		        <p>{{articles[articles.length -4].description | limitTo: 100}}</p>
 		    </div>
-		
+
       </div>
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
@@ -99,7 +99,7 @@
 						</a>
 					</div>
 				</td>
-			</tr>	
+			</tr>
 			<tr>
 
 				<td colspan = "1" rowspan="1">
@@ -133,7 +133,7 @@
 					</div>
 				</td>
 
-				
+
 			</tr>
 			</tbody>
 		</table>
@@ -171,7 +171,7 @@
 						</a>
 					</div>
 				</td>
-			</tr>	
+			</tr>
 			<tr>
 				<td colspan = "1" rowspan="1">
 					<div id="box-2" class="box1">
@@ -193,7 +193,7 @@
 						</a>
 					</div>
 				</td>
-				
+
 			</tr>
 			</tbody>
 		</table>
@@ -211,7 +211,7 @@
 						</a>
 					</div>
 				</td>
-				
+
 				<td colspan = "1" rowspan="1">
 					<div id="box-2" class="box1">
 						<a  ng-href="/article/{{articles[articles.length -20]._id}}">
@@ -232,7 +232,7 @@
 						</a>
 					</div>
 				</td>
-			</tr>	
+			</tr>
 			<tr>
 				<td colspan = "1" rowspan="1">
 					<div id="box-2" class="box1">
@@ -254,7 +254,7 @@
 						</a>
 					</div>
 				</td>
-				
+
 			</tr>
 			</tbody>
 		</table>
@@ -272,7 +272,7 @@
 						</a>
 					</div>
 				</td>
-				
+
 				<td colspan = "1" rowspan="1">
 					<div id="box-2" class="box1">
 						<a  ng-href="/article/{{articles[articles.length -11]._id}}">
@@ -293,9 +293,9 @@
 						</a>
 					</div>
 				</td>
-			</tr>	
+			</tr>
 			<tr>
-				
+
 				<td colspan = "1" rowspan="1">
 					<div id="box-2" class="box1">
 						<a  ng-href="/article/{{articles[articles.length -4]._id}}">
@@ -316,17 +316,17 @@
 						</a>
 					</div>
 				</td>
-				
+
 			</tr>
 			</tbody>
 		</table>
 
 	</div>
 
-	
+
 </div>
 
-<div class = "col-md-3 bg-info visible-lg-block">
+<div class = "col-md-3 visible-lg-block form-panel">
 	<br>
 	<div id="Carousel1" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -337,37 +337,36 @@
 	      <li data-target="#Carousel1" data-slide-to="3"></li>
 	      <li data-target="#Carousel1" data-slide-to="4"></li>
 	    </ol>
-
 	    <!-- Wrapper for slides -->
 	    <div class="carousel-inner" role="listbox">
-	      	<div class="item active" >
-		        <img src="/images/Ads/1.png"  width="460" height="345">	
+          <div class="item active">
+            <img src="/images/introduce/3.jpg"  width="460" height="345">
+          </div>
+	      	<div class="item" >
+		        <img src="/images/introduce/1.png"  width="460" height="345">
 	      	</div>
-	      	<div class="item">     
-		        <img src="/images/Ads/2.jpg"  width="460" height="345">
+	      	<div class="item">
+		        <img src="/images/introduce/2.jpg"  width="460" height="345">
 	      	</div>
-	      	<div class="item">	   
-		        <img src="/images/Ads/3.jpg"  width="460" height="345">	        
+	      	<div class="item">
+		        <img src="/images/introduce/4.jpg"  width="460" height="345">
 	      	</div>
-	      	<div class="item">      	
-		        <img src="/images/Ads/4.jpg"  width="460" height="345">		
+	      	<div class="item">
+		        <img src="/images/introduce/5.jpg"  width="460" height="345">
 	      	</div>
-	      	<div class="item">      	
-		        <img src="/images/Ads/5.jpg"  width="460" height="345">		
-	      	</div>
-	      	
+
 	    </div>
 	    <br>
   	</div>
   	<div class=" " >
 		<h3>Categories</h3>
 		<div ng-repeat = "category in categories">
-			<img ng-src="images/category/{{category}}.png">
+			<img ng-src="images/category/{{category}}.png" width = "25px" height = "25px">
 			<a class = "text-left" ng-href="/category/p?category={{category}}&page=1">  {{category}}</a>
 		</div>
 		<br>
 	</div>
-	
+
 </div>
 <div class = "bg-info hidden-lg ">
 		<h3>Categories</h3>
@@ -376,5 +375,5 @@
 			<a class = "text-left" ng-href="/category/p?category={{category}}&page=1">  {{category}}</a>
 		</div>
 		<br>
-	
+
 </div>

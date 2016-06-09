@@ -58,7 +58,24 @@ button{
   color: white;
 }
 .change-pass-form{
-	background-color: #dedede;
+	background-color: #eeeeee;
+  border: 1px solid #dedede;
+}
+.error-text{
+    color: red;
+    font-weight: bold;
+}
+.success-text{
+    color: green;
+    font-weight: bold;
+}
+.your-article-list{
+  border-left: 1px solid #bbbbbb;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+	background-color: #f7f7f7;
+  text-overflow: ellipsis;
 }
 body{
 		background-color: #dddddd;

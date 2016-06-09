@@ -1,7 +1,7 @@
-
-<form class = "col-md-6 col-md-offset-1 panel panel-primary" ng-submit = 'signup()'>
-	<h1>Create new account</h1>
-	<p ng-show = "error!=null">*** {{error}} ****</p>
+<div class = "col-md-7 col-md-offset-1">
+<form class = "form-panel"  ng-submit = 'signup()'>
+	<h3>Create new account</h3>
+	<p class = "error-text" ng-show = "error!=null">*** {{error}} ****</p>
 	<div class="form-group">
         <label for="username">Username:</label>
         <input type="text" class="form-control" id="username" ng-model = "username" placeholder="Username">
@@ -23,6 +23,27 @@
             <input type="checkbox" ng-model = "rememberMe"> Remember me
            </label>
         </div>
-     <button type="submit" class="btn btn-success">Create account</button>
+     <button type="submit" class="btn btn-success pull-right">Create account</button>
      <br>
 </form>
+</div>
+<div class = "col-md-3">
+		<form class = "form-panel" ng-submit = "login()">
+				 <h3>Have an account?</h3>
+				 <p class = "error-text" ng-show = "login_error!=null">{{login_error}}</p>
+				 <div class="form-group">
+						 <label for="username">Username:</label>
+						 <input type="text" class="form-control" id="username" ng-model = "login_username" placeholder="Username">
+				 </div>
+				 <div class="form-group">
+						 <label for="password">Password:</label>
+						 <input type="password" class="form-control" id="password" ng-model = "login_password" placeholder="Password">
+				 </div>
+				 <div class="checkbox">
+						 <label class = "col-md-9">
+							 <input type="checkbox"> Remember me
+							</label>
+							<button type="submit" class="btn btn-success pull-right">Log in</button>
+				 </div>
+		 </form>
+</div>
