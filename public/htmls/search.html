@@ -10,10 +10,10 @@
 						<div class = "col-md-12">
 							<p><span><strong>Category: </strong>{{article.category}} </span>&nbsp&nbsp&nbsp<span><strong> Author: </strong>{{article.author}}  </span></p>
 							<p><span><strong>Views: </strong>{{article.views}}   </span>&nbsp&nbsp&nbsp<span><strong>  Update: </strong>{{convertTime(article.date)}}</span></p>
-							<p><span><strong></strong>{{article.description}}</span></p>
+							<p><span><strong></strong>{{article.description | limitTo: 140}}</span></p>
 						</div>
 				</div>
-	</div>
+	</div><br>
 </div>
 <div class = "col-md-3 form-panel">
 	<h3>Categories</h3>

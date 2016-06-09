@@ -8,19 +8,19 @@
 	<br>
 	<div ng-repeat = "t in data.content.parts">
 			<div class="form-panel">
-				<nav class="navbar col-md-11 well shadow" ng-show = "data.content.parts.length >1">
+				<div class="navbar " ng-show = "data.content.parts.length >1">
 					<a class="navbar-brand brand" >Part {{$index + 1}}</a>
 					<h2 class="navbar-text">{{t.title}} </h2>
-				</nav>
+				</div>
 				<div class = "form-panel"ng-repeat = "x in t.steps">
 					<div >
 						<img ng-src="{{x.image}}" class="imagen" ng-show="x.image">
 					</div>
 
-					<h2 class="step navbar-brand">{{$index + 1}}</h2>
+					<h4 class="step navbar-brand" align="center">{{$index + 1}}</h4>
 					<p> <strong>{{x.title}}.</strong> {{x.text}}</p>
-					<br>
 				</div>
+				<br>
 			</div>
 			<br>
 	</div>
@@ -35,7 +35,7 @@
 			</fieldset>
 
   		</div><br><br>
-  		<h4 align="center"><b>{{data.rate.sumRate/data.rate.totalRate | number:1}}</b> / 5 by <b>{{data.rate.totalRate}}</b> people</h4>
+  		<h4 align="center"><b>{{addrate | number:1}}</b> / 5 by <b>{{data.rate.totalRate}}</b> people</h4>
   		<hr class="featurette-divider">
   		<div class="row">
 	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3>Date: {{data.header.date | date: "dd-MM-yyyy"}} <br>Time:  {{data.header.date | date: "HH:mm:ss"}}<hr class="featurette-divider"></div>
