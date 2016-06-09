@@ -5,7 +5,7 @@ var app = angular.module('appController');
 //	else if ($cookies.getObject('user')) $rootScope.user = $cookies.getObject('user');
 //}]);
 
-app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',function($scope,$rootScope,$http,Upload){
+app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload','$location',function($scope,$rootScope,$http,Upload,$location){
 	$scope.checked = 0;
 	$rootScope.title = "New articles";
 	$scope.data = {
@@ -50,10 +50,6 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 	};
 	var postData = function(){
 				$scope.data.header.author = $rootScope.user.username;
-
-				data.header.title = $scope.article_title;
-				data.header.category = $scope.category;
-				data.header.description = $scope.article_intro;
 				$scope.data.header.image = $scope.data.content.parts[0].steps[0].image;
 				if( ! $scope.data.header.image){
 					$scope.data.header.image = "/images/user/default.jpg";
@@ -63,7 +59,7 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload',fu
 					url: "article/post",
 					data: $scope.data
 				}).then(function(response){
-						console.log(response.data);
+						$location.url('/article/'+response.data);
 				},function(){});
 	}
 	$scope.addStep = function (index){
