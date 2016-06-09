@@ -77,7 +77,12 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload','$
 	};
 	$scope.imageUrl = null;
 	$scope.upload = function (partIndex,stepIndex,callBack) {
-        Upload.upload({
+				if($scope.upimage[partIndex][stepIndex].image.$ngfName==undefined){
+						if(stepIndex<$scope.upimage[partIndex].length-1) $scope.upload(partIndex,stepIndex+1,callBack);
+						else if(partIndex<$scope.upimage.length-1)  $scope.upload(partIndex+1,0,callBack);
+						else callBack();
+				}
+        else Upload.upload({
             url: 'article/upload-image',
             data: {file: $scope.upimage[partIndex][stepIndex].image}
         }).then(function (res) {
@@ -85,8 +90,8 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload','$
 						if(stepIndex<$scope.upimage[partIndex].length-1) $scope.upload(partIndex,stepIndex+1,callBack);
 						else if(partIndex<$scope.upimage.length-1)  $scope.upload(partIndex+1,0,callBack);
 						else callBack();
-						console.log($scope.upimage[partIndex].length-2,$scope.upimage.length-2 );
-            console.log("image Link: part"+partIndex+" step"+stepIndex+ "    " +$scope.data.content.parts[partIndex].steps[stepIndex].image);
+						//console.log($scope.upimage[partIndex].length-2,$scope.upimage.length-2 );
+            //console.log("image Link: part"+partIndex+" step"+stepIndex+ "    " +$scope.data.content.parts[partIndex].steps[stepIndex].image);
         }, function (res) {
             console.log('Error status: ' + res.status);
         }, function (evt) {
@@ -101,7 +106,7 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload','$
 	},function(){});
 }]);
 app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',function($rootScope,$scope,$http,$stateParams){
-	$scope.addrate = 0;
+	$scope.addrate = 3;
 	$scope.color = {
         name: 'blue'
       };
@@ -112,11 +117,9 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 		}).then(function(response){
 			$scope.data = response.data;
 			$rootScope.title = $scope.data.header.title;
-			$scope.addrate = $scope.data.rate.sumRate/$scope.data.rate.totalRate;
 	},function(){
 
 	});
-	
 
 	$http({
 		method: 'GET',
@@ -124,7 +127,6 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 	}).then(function(response){
 		$scope.categories = response.data.map(function(a) {return a.name;});
 	},function(){});
-	
 	$scope.rateArticle = function(){
 		if (! $rootScope.user ) {
 			confirm(" You must login before you want to rate article ");
@@ -135,21 +137,6 @@ app.controller("ViewArticleCtrl",['$rootScope','$scope','$http','$stateParams',f
 			url: "article/rating/rate?user_id=" +$rootScope.user._id+"&rate="+$scope.color.name+"&id="+$scope.data.rate._id,
 		}).then(function(response){
 			console.log(Error);
-			
-		},function(){
-
-		});
-		$scope.addrate = $scope.data.rate.sumRate/$scope.data.rate.totalRate;
-		/*/$http({
-			method: "GET",
-			url: "/article/get-content"+$stateParams.id
-		}).then(function(response){
-			$scope.data = response.data;
-			$rootScope.title = $scope.data.header.title;
-			$scope.addrate = $scope.data.rate.sumRate/$scope.data.rate.totalRate;
-			$scope.data.header.views = $scope.data.header.views - 1;
-		},function(){
-
-		});*/
+		},function(){});
 	};
 }]);
