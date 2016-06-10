@@ -105,7 +105,7 @@ router.get('/rating/rate*',function(req,res){
 		req.query.rate = parseInt(req.query.rate);
 		Rates.findById(req.query.id,function(err,ratingReturn){
 				if(err) res.send("Error");
-				if(rating){
+				if(ratingReturn){
 						//;//console.log(rating);
             var rating = ratingReturn;
 						for(index=0;index<rating.rate.length;index++){
