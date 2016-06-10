@@ -103,10 +103,11 @@ router.get('/rating/get:id',function(req,res){
 });
 router.get('/rating/rate*',function(req,res){
 		req.query.rate = parseInt(req.query.rate);
-		Rates.findById(req.query.id,function(err,rating){
+		Rates.findById(req.query.id,function(err,ratingReturn){
 				if(err) res.send("Error");
 				if(rating){
 						//;//console.log(rating);
+            var rating = ratingReturn;
 						for(index=0;index<rating.rate.length;index++){
                 console.log(rating.rate[index]);
 								_index = rating.rate[index].findIndex(function(id){return req.query.user_id==id;});
