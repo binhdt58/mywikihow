@@ -103,20 +103,18 @@ router.get('/rating/get:id',function(req,res){
 });
 router.get('/rating/rate*',function(req,res){
 		req.query.rate = parseInt(req.query.rate);
-		Rates.findById(req.query.id,function(err,ratingReturn){
+		Rates.findById(req.query.id,function(err,rating){
 				if(err) res.send("Error");
-				if(ratingReturn){
+				if(rating){
 						//;//console.log(rating);
-            var rating = ratingReturn;
 						for(index=0;index<rating.rate.length;index++){
-                console.log(rating.rate[index]);
-								_index = rating.rate[index].findIndex(function(id){return req.query.user_id==id;});
-								if(_index>=0){
+                //console.log(rating.rate[index]);
+								var notRated =  rating.rate[index].every(function(id,_index){
+                    if(req.query.user_id!=id) return true;//continue
 										if(index==req.query.rate) {
 											res.send(rating);
 											return;
-										}
-										;//console.log("user already rated");
+										};//console.log("user already rated");
 										rating.rate[index].splice(_index,1);
 										rating.sumRate -= index+1;
 										rating.sumRate += req.query.rate+1;
@@ -126,8 +124,9 @@ router.get('/rating/rate*',function(req,res){
 											;//console.log(err);
 											res.send(newRate);
 										});
-										return;
-								}
+										return false;//break
+								});
+                if(!notRated) return;
 						};
 						rating.sumRate+=req.query.rate+1;
 						rating.totalRate+=1;
