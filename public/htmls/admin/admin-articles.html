@@ -10,6 +10,7 @@
 			<tr>
 				<th>#</th>
 				<th>Name</th>
+				<th>Author</th>
 				<th>Category</th>
 				<th>Date</th>
 				<th>Views</th>
@@ -20,6 +21,7 @@
 			<tr ng-repeat = "article in articles">
 				<th>{{$index+1+10*(page-1)}}</th>
 				<th>{{article.title.substring(0,30)}}</th>
+				<th>{{article.author}}</th>
 				<th>{{article.category}}</th>
 				<th>{{article.date.substring(0,10)}}</th>
 				<th>{{article.views}}</th>

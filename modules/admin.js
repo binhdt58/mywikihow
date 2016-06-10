@@ -34,9 +34,12 @@ router.get('/articles/get*',function(req,res){
 router.post('/articles/remove*',function(req,res){
     ArticleHeaders.findOne({_id: req.query.id},function(err,header){
       if(err) console.log(err);
+      if(!header) return;
       ArticleContents.findByIdAndRemove(header.content,function(err){});
       Rates.findByIdAndRemove(header.rate,function(err){});
-      ArticleHeaders.findByIdAndRemove(header._id,function(err){});
+      ArticleHeaders.findByIdAndRemove(header._id,function(err){
+        res.redirect('/ad/articles/get?page='+req.query.page);
+      });
       SystemInfo.numberOfArticles--;
       Categories.findOne({name: header.category},function(err,c){
           if(err) return;
@@ -45,8 +48,8 @@ router.post('/articles/remove*',function(req,res){
             c.save(function(err){});
           }
       });
-    });
-    res.redirect('/ad/articles/get?page='+req.query.page);
+      });
+
 });
 router.get('/users/get*',function(req,res){
     var page = req.query.page;

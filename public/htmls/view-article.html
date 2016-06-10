@@ -42,7 +42,8 @@
 			</fieldset>
 
   		</div><br><br>
-  		<h4 align="center"><b>{{data.rate.sumRate/data.rate.totalRate | number:1}}</b> / 5 by <b>{{data.rate.totalRate}}</b> people</h4>
+  		<h4 align="center" ng-show="data.rate.totalRate!=0"><b>{{data.rate.sumRate/data.rate.totalRate | number:1}}</b> / 5 by <b>{{data.rate.totalRate}}</b> people</h4>
+			<h4 align="center" ng-show="data.rate.totalRate==0">How do you think about it</h4>
   		<hr class="featurette-divider">
   		<div class="row">
 	  		<div class="col-md-6" align="center"><h3 ><span class="glyphicon glyphicon-time" aria-hidden="true"></span></h3>Date: {{data.header.date | date: "dd-MM-yyyy"}} <br>Time:  {{data.header.date | date: "HH:mm:ss"}}<hr class="featurette-divider"></div>
