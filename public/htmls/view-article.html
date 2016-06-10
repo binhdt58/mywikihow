@@ -16,7 +16,7 @@
 					<div >
 						<img ng-src="{{x.image}}" class="imagen" ng-show="x.image">
 					</div>
-					<h4 class="step navbar-brand" align="center">{{$index + 1}}<br></h4>
+					<h5 class="step navbar-brand" align="center">{{$index + 1}}<br></h5>
 					<p> <strong>{{x.title}}.</strong> {{x.text}}</p>
 				<br></div>
 				<br>
@@ -28,9 +28,17 @@
 		<h3 align="center">How helpful is this ?</h3>
 		<div class="col-md-2"></div>
 		<div style="text-align:center" class="col-md-10" >
-			<fieldset class="rating" align="center" ng-repeat="n in ['Unhelpful','Mostly unhelpful','Possibly helpful','Mostly helpful','Extremely helpful']">
-		         	<input type="radio" id="star{{$index}}" name="rating" ng-model="color.name" ng-value="$index" ng-click = "rateArticle()">
-		        	<label  for="star{{$index}}" title="{{n}}">  </label>
+			<fieldset class="rating" align="center" >
+		        <input type="radio" id="star5" name="rating" ng-value="4" ng-model = "color.name" ng-click = "rateArticle()">
+			    	<label for="star5" title="Extremely helpful">5 stars</label>
+			    <input type="radio" id="star4" name="rating" ng-value="3" ng-model = "color.name" ng-click = "rateArticle()">
+			    	<label for="star4" title="Mostly helpful">4 stars</label>
+			    <input type="radio" id="star3" name="rating" ng-value="2" ng-model = "color.name" ng-click = "rateArticle()">
+			    	<label for="star3" title="Possibly helpful">3 stars</label>
+			    <input type="radio" id="star2" name="rating" ng-value="1" ng-model = "color.name" ng-click = "rateArticle()">
+			    	<label for="star2" title="Mostly unhelpful">2 stars</label>
+			    <input type="radio" id="star1" name="rating" ng-value="0" ng-model = "color.name" ng-click = "rateArticle()">
+			    	<label for="star1" title="Unhelpful">1 star</label>
 			</fieldset>
 
   		</div><br><br>
