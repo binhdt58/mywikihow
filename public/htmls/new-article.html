@@ -67,9 +67,10 @@
 			<br>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group" ng-init = "posted = false">
 		<br>
-		    <button ng-click = "postArticle()" class="btn btn-success">Post article with data above</button>
+		    <button ng-click = "postArticle()" class="btn btn-success" ng-show = "!posted">Post article with data above</button>
+				<button class="btn btn-success" ng-show = "posted">Your article is being posted</button>
 		</div>
 
 </div>

@@ -46,6 +46,7 @@ app.controller('CreateNewArticleCtrl',['$scope','$rootScope','$http','Upload','$
 			confirm(" You must fill in the introduction before you want to post article ");
 			return;
 		};
+		$scope.posted = true;
 		$scope.upload(0,0,postData);
 	};
 	var postData = function(){
