@@ -13,13 +13,13 @@ ArticleHeaders = db.ArticleHeaders;
 ArticleContents = db.ArticleContents;
 Rates = db.Rates;
 Categories = db.Categories;
-
+var NUM_ARTICLES_HOMEPAGE = 25;
 router.post('/upload-image', multipartMiddleware, function(req, res) {
   if(req.files.file) res.send(req.files.file.path.slice(6));
   delete req.files;
 });
 router.get('/list',function(req,res){
-  ArticleHeaders.find({},function(err,articles){
+  ArticleHeaders.find({}).limit(NUM_ARTICLES_HOMEPAGE).exec(function(err,articles){
     if(err){
       res.send("Error");
       return;
@@ -27,7 +27,7 @@ router.get('/list',function(req,res){
     if(articles){
       res.send(articles);
     }
-  })
+  });
 });
 router.get('/search:key',function(req,res){
   ArticleHeaders.search({query_string: {query: req.params.key }}, {hydrate:true},function(err,results){

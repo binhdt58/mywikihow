@@ -35,18 +35,21 @@ router.post('/articles/remove*',function(req,res){
     ArticleHeaders.findOne({_id: req.query.id},function(err,header){
       if(err) console.log(err);
       if(!header) return;
-      ArticleContents.findByIdAndRemove(header.content,function(err){});
-      Rates.findByIdAndRemove(header.rate,function(err){});
+      ArticleContents.findByIdAndRemove(header.content,function(err){
+        Rates.findByIdAndRemove(header.rate,function(err){
+              //console.log("DONE CLEAR CONTENT");
+        });
+      });
       ArticleHeaders.findByIdAndRemove(header._id,function(err){
-        res.redirect('/ad/articles/get?page='+req.query.page);
+          res.redirect('/ad/articles/get?page='+req.query.page);
       });
       SystemInfo.numberOfArticles--;
       Categories.findOne({name: header.category},function(err,c){
-          if(err) return;
-          if(c){
-            c.numberArticles--;
-            c.save(function(err){});
-          }
+        if(err) return;
+        if(c){
+          c.numberArticles--;
+          c.save(function(err){});
+        }
       });
       });
 
@@ -100,7 +103,7 @@ router.post('/users/role*',function(req,res){
 router.post('/category/remove/:category',function(req,res){
     Categories.findOne({name: req.params.category}).remove().exec();
     fs.unlink('public/images/category/'+req.params.category+".png",function(err){
-      if(err) console.log(err);
+      //if(err) console.log(err);
     });
     res.redirect('/get/categories');
 });
@@ -116,7 +119,7 @@ router.post('/category/rename*',function(req,res){
     ArticleHeaders.update({category: req.query.oldName},{category: req.query.newName},{multi: true}, function(err){});
     Categories.findOneAndUpdate({name: req.query.oldName},{name: req.query.newName},function(err){
       fs.rename('public/images/category/'+req.query.oldName+".png",'public/images/category/'+req.query.newName+".png",function(err){
-         if(err) console.log(err);
+         //if(err) console.log(err);
           res.send("OK");
       });
     });
@@ -128,11 +131,11 @@ router.post('/category/upimage/:category', categoryUpload, function(req, res) {
   }
   path = req.files.file.path;
   fs.unlink(link,function(err){
-    if(err) console.log(err);
+    //if(err) console.log(err);
 
   });
  fs.rename(req.files.file.path,link,function(err){
-         if(err) console.log(err);
+         //if(err) console.log(err);
          });
   delete req.files;
   res.send("OK");

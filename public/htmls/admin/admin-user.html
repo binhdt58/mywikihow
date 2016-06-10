@@ -21,18 +21,18 @@
 				<th>{{user.username}}</th>
 				<th>{{user.email}}</th>
 				<th ng-init="edit = false">
-					<p ng-hide = "edit" ng-click = "edit = true">{{user.role}}</p>
+					<p ng-hide = "edit" ng-click = "edit = true" title = "Click To Edit">{{user.role}}</p>
 					<div ng-show = "edit" ng-init = "role = user.role">
 						<select  ng-model = "role">
-						  <option value = "admin">admin<span ng-show = "user.role=='admin'" class="glyphicon glyphicon-ok" aria-hidden="true"></span></option>
-						  <option vaue = "user">user<span ng-show = "user.role=='user'" class="glyphicon glyphicon-ok" aria-hidden="true"></span></option>
+						  <option value = "admin">admin</option>
+						  <option vaue = "user">user</option>
 						</select>
 
-						<span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click = "changeRole(role,$index);edit = false"></span>
-						<span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click = "edit = false"></span>
+						<span class="glyphicon glyphicon-ok confirm-text" aria-hidden="true" ng-click = "changeRole(role,$index);edit = false"></span>
+						<span class="glyphicon glyphicon-remove cancel-text" aria-hidden="true" ng-click = "edit = false"></span>
 					</div>
 				</th>
-				<th><button class= "btn btn-danger btn-sm" ng-click = "remove(user.username)">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
+				<th><button class= "btn btn-danger btn-sm" ng-click = "remove(user.username)" title="Click To Remove">Remove <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></th>
 				<!--th><a ng-click = "goto(category.name)">Detail>></a></th-->
 			</tr>
 		</tbody>

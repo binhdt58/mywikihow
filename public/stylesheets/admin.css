@@ -80,3 +80,9 @@ button{
 body{
 		background-color: #dddddd;
 }
+.confirm-text{
+	color: #11dd11;
+}
+.cancel-text{
+	color: #dd1111;
+}
