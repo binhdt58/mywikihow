@@ -108,6 +108,7 @@ router.get('/rating/rate*',function(req,res){
 				if(rating){
 						//;//console.log(rating);
 						for(index=0;index<rating.rate.length;index++){
+                console.log(rating.rate[index]);
 								_index = rating.rate[index].findIndex(function(id){return req.query.user_id==id;});
 								if(_index>=0){
 										if(index==req.query.rate) {
