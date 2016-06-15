@@ -19,7 +19,7 @@ router.post('/upload-image', multipartMiddleware, function(req, res) {
   delete req.files;
 });
 router.get('/list',function(req,res){
-  ArticleHeaders.find({}).limit(NUM_ARTICLES_HOMEPAGE).exec(function(err,articles){
+  ArticleHeaders.find({}).sort({_id: 1}).limit(NUM_ARTICLES_HOMEPAGE).exec(function(err,articles){
     if(err){
       res.send("Error");
       return;
